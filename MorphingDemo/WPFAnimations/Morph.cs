@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Media;
-
 
 namespace WPFAnimations
 {
@@ -318,7 +318,7 @@ namespace WPFAnimations
             return 0;
         }
 
-        public static Point GetCentroid(PointCollection nodes, int count)
+        public static Point GetCentroid(AvaloniaList<Point> nodes, int count)
         {
             double x = 0, y = 0, area = 0, k;
             Point a, b = nodes[count - 1];
