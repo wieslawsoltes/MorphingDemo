@@ -219,14 +219,23 @@ namespace WPFAnimations.Visuals
             string font = "Nexa Bold",
             double fontSize = 88)
         {
-            var culture = CultureInfo.InvariantCulture;
-            var flow = FlowDirection.LeftToRight;
+            // TODO: var culture = CultureInfo.InvariantCulture;
+            // TODO: var flow = FlowDirection.LeftToRight;
             var fontFamily = new FontFamily(font);
-            var typeface = new Typeface(fontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-            var formattedText = new FormattedText(text, culture, flow, typeface, fontSize, Brushes.White, 100);
+            var typeface = new Typeface(fontFamily, FontStyle.Normal, FontWeight.Normal);
+            // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.formattedtext.-ctor?view=net-5.0#System_Windows_Media_FormattedText__ctor_System_String_System_Globalization_CultureInfo_System_Windows_FlowDirection_System_Windows_Media_Typeface_System_Double_System_Windows_Media_Brush_System_Double_
+            // TODO: var formattedText = new FormattedText(text, culture, flow, typeface, fontSize, Brushes.White, 100);
+            var formattedText = new FormattedText()
+            {
+                Text = text,
+                Typeface = typeface,
+                FontSize = fontSize
+            };
 
-            var geometry = formattedText.BuildGeometry(new Point(x, y));
-            var pathGeometry = geometry.GetFlattenedPathGeometry();
+            // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.formattedtext.buildgeometry?view=net-5.0
+            Geometry geometry = formattedText.BuildGeometry(new Point(x, y));
+            // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.geometry.getflattenedpathgeometry?view=net-5.0#System_Windows_Media_Geometry_GetFlattenedPathGeometry
+            PathGeometry pathGeometry = geometry.GetFlattenedPathGeometry();
             var unfrozen = pathGeometry.Clone();
 
             return unfrozen;
