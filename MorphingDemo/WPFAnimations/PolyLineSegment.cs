@@ -27,5 +27,8 @@ namespace WPFAnimations
                 ctx.EndFigure(false);
             }
         }
+
+        public override string ToString()
+            => Points?.Count >= 1 ? "L " + string.Join(' ', Points) : "";
     }
 }
