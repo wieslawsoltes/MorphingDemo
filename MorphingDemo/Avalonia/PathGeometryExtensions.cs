@@ -369,9 +369,9 @@ namespace MorphingDemo.Avalonia
                         break;
                     case LineSegment lineSegmentIn:
                     {
-                        var lineSegmentOut = new BezierSegment()
+                        var lineSegmentOut = new LineSegment()
                         {
-                            Point1 = lineSegmentIn.Point
+                            Point = lineSegmentIn.Point
                         };
                         figureOut.Segments?.Add(lineSegmentOut);
                     }
