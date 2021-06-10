@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Threading;
-using WPFAnimations.Visuals.Animation;
+using Avalonia.Media;
+using Avalonia.Threading;
 
 namespace WPFAnimations.Visuals
 {
