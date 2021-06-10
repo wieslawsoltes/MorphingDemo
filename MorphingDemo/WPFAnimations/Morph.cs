@@ -40,7 +40,7 @@ namespace WPFAnimations
 
             source.StartPoint = new Point(newX, source.StartPoint.Y);
         }
-
+/* TODO:
         private static bool DoFiguresOverlap(PathFigures figures, int index0, int index1, int index2)
         {
             if (index2 < figures.Count && index0 >= 0)
@@ -79,7 +79,7 @@ namespace WPFAnimations
             }
             return false;
         }
-
+*/
         private static void CollapseFigure(PathFigure figure)
         {
             var points = ((PolyLineSegment)figure.Segments[0]).Points;
@@ -163,6 +163,7 @@ namespace WPFAnimations
                     // We try to detect if our last shape has an overlapping geometry
                     // if it does then we will clone the previrous shape.
                     //
+                    /* TODO:
                     if (lastIndex > 0)
                     {
                         if (DoFiguresOverlap(target.Figures, lastIndex - 1, lastIndex))
@@ -184,7 +185,9 @@ namespace WPFAnimations
                     else
                     {
                         CollapseFigure(clone);
-                    }
+                    }*/
+                    // TODO:
+                    CollapseFigure(clone);
 
                     target.Figures.Add(clone);
                 }
