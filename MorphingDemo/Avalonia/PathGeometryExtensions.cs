@@ -91,7 +91,7 @@ namespace MorphingDemo.Avalonia
             return Math.Sqrt(Math.Pow(pt1.X - pt0.X, 2) + Math.Pow(pt1.Y - pt0.Y, 2));
         }
 
-        public static PathGeometry FlattenWithTransform(this PathGeometry pathIn, Func<Point, Point> transform, FlattenOutput flattenOutput)
+        public static PathGeometry Flatten(this PathGeometry pathIn, FlattenOutput flattenOutput)
         {
             var pathOut = new PathGeometry()
             {
@@ -106,7 +106,7 @@ namespace MorphingDemo.Avalonia
                 {
                     IsClosed = figureIn.IsClosed,
                     IsFilled = figureIn.IsFilled,
-                    StartPoint = transform(figureIn.StartPoint)
+                    StartPoint = figureIn.StartPoint
                 };
                 firstPoint = lastPoint = figureIn.StartPoint;
 
@@ -134,9 +134,9 @@ namespace MorphingDemo.Avalonia
                             {
                                 case FlattenOutput.Lines:
                                 {
-                                    foreach (var pt in points)
+                                    for (var i = 0; i < points.Length; i++)
                                     {
-                                        var lineSegmentOut = new LineSegment {Point = transform(pt)};
+                                        var lineSegmentOut = new LineSegment {Point = points[i]};
                                         figureOut.Segments?.Add(lineSegmentOut);
                                     }
                                 }
@@ -147,10 +147,11 @@ namespace MorphingDemo.Avalonia
                                     {
                                         Points = new AvaloniaList<Point>()
                                     };
-                                    foreach (var pt in points)
+                                    for (var i = 0; i < points.Length; i++)
                                     {
-                                        polyLineSegmentOut.Points.Add(transform(pt));
+                                        polyLineSegmentOut.Points.Add(points[i]);
                                     }
+
                                     figureOut.Segments?.Add(polyLineSegmentOut);
                                 }
                                     break;
@@ -167,9 +168,9 @@ namespace MorphingDemo.Avalonia
                             {
                                 case FlattenOutput.Lines:
                                 {
-                                    foreach (var pt in points)
+                                    for (var i = 0; i < points.Length; i++)
                                     {
-                                        var lineSegmentOut = new LineSegment {Point = transform(pt)};
+                                        var lineSegmentOut = new LineSegment {Point = points[i]};
                                         figureOut.Segments?.Add(lineSegmentOut);
                                     }
                                 }
@@ -180,10 +181,11 @@ namespace MorphingDemo.Avalonia
                                     {
                                         Points = new AvaloniaList<Point>()
                                     };
-                                    foreach (var pt in points)
+                                    for (var i = 0; i < points.Length; i++)
                                     {
-                                        polyLineSegmentOut.Points.Add(transform(pt));
+                                        polyLineSegmentOut.Points.Add(points[i]);
                                     }
+
                                     figureOut.Segments?.Add(polyLineSegmentOut);
                                 }
                                     break;
@@ -200,9 +202,9 @@ namespace MorphingDemo.Avalonia
                             {
                                 case FlattenOutput.Lines:
                                 {
-                                    foreach (var pt in points)
+                                    for (var i = 0; i < points.Length; i++)
                                     {
-                                        var lineSegmentOut = new LineSegment {Point = transform(pt)};
+                                        var lineSegmentOut = new LineSegment {Point = points[i]};
                                         figureOut.Segments?.Add(lineSegmentOut);
                                     }
                                 }
@@ -213,10 +215,11 @@ namespace MorphingDemo.Avalonia
                                     {
                                         Points = new AvaloniaList<Point>()
                                     };
-                                    foreach (var pt in points)
+                                    for (var i = 0; i < points.Length; i++)
                                     {
-                                        polyLineSegmentOut.Points.Add(transform(pt));
+                                        polyLineSegmentOut.Points.Add(points[i]);
                                     }
+
                                     figureOut.Segments?.Add(polyLineSegmentOut);
                                 }
                                     break;
@@ -237,9 +240,9 @@ namespace MorphingDemo.Avalonia
                                     {
                                         case FlattenOutput.Lines:
                                         {
-                                            foreach (var pt in points)
+                                            for (var j = 0; j < points.Length; j++)
                                             {
-                                                var lineSegmentOut = new LineSegment {Point = transform(pt)};
+                                                var lineSegmentOut = new LineSegment {Point = points[j]};
                                                 figureOut.Segments?.Add(lineSegmentOut);
                                             }
                                         }
@@ -250,10 +253,11 @@ namespace MorphingDemo.Avalonia
                                             {
                                                 Points = new AvaloniaList<Point>()
                                             };
-                                            foreach (var pt in points)
+                                            for (var j = 0; j < points.Length; j++)
                                             {
-                                                polyLineSegmentOut.Points.Add(transform(pt));
+                                                polyLineSegmentOut.Points.Add(points[j]);
                                             }
+
                                             figureOut.Segments?.Add(polyLineSegmentOut);
                                         }
                                             break;
@@ -272,6 +276,7 @@ namespace MorphingDemo.Avalonia
                     }
                 }
 
+#if true
                 if (figureIn.IsClosed)
                 {
                     var points = Interpolate(lastPoint, firstPoint);
@@ -280,9 +285,9 @@ namespace MorphingDemo.Avalonia
                     {
                         case FlattenOutput.Lines:
                         {
-                            foreach (var pt in points)
+                            for (var i = 0; i < points.Length; i++)
                             {
-                                var lineSegmentOut = new LineSegment {Point = transform(pt)};
+                                var lineSegmentOut = new LineSegment {Point = points[i]};
                                 figureOut.Segments?.Add(lineSegmentOut);
                             }
                         }
@@ -293,10 +298,11 @@ namespace MorphingDemo.Avalonia
                             {
                                 Points = new AvaloniaList<Point>()
                             };
-                            foreach (var pt in points)
+                            for (var i = 0; i < points.Length; i++)
                             {
-                                polyLineSegmentOut.Points.Add(transform(pt));
+                                polyLineSegmentOut.Points.Add(points[i]);
                             }
+
                             figureOut.Segments?.Add(polyLineSegmentOut);
                         }
                             break;
@@ -304,8 +310,8 @@ namespace MorphingDemo.Avalonia
 
                     firstPoint = lastPoint = new Point(0, 0);
                 }
+#endif
             }
-
             return pathOut;
         }
 
