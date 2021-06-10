@@ -105,7 +105,7 @@ namespace WPFAnimations
             var powerEase = new PowerEase();
             int steps = (int)(1 / speed);
             double p = speed;
-            List<PathGeometry> cache = new List<PathGeometry>(steps);
+            var cache = new List<PathGeometry>(steps);
 
             for (int i = 0; i < steps; i++)
             {
