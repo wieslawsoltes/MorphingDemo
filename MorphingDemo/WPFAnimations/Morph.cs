@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Collections;
 using Avalonia.Media;
+using MorphingDemo.Avalonia;
 
 namespace WPFAnimations
 {

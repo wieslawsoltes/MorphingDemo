@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using MorphingDemo.Avalonia;
 using WPFAnimations;
 
 namespace MorphingDemo
@@ -24,6 +26,9 @@ namespace MorphingDemo
             var targetFlattened = target.FlattenWithTransform(p => p, FlattenOutput.PolyLines);
 
             var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01);
+
+
+            
 
         }
 

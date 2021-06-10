@@ -2,19 +2,95 @@
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Media;
-using SkiaSharp;
-using WPFAnimations;
 
-namespace WPFAnimations
+namespace MorphingDemo.Avalonia
 {
-    enum FlattenOutput
+    public enum FlattenOutput
     {
         Lines,
         PolyLines
     }
 
-    static class PathGeometryExtensions
+    public static class PathGeometryExtensions
     {
+        private static Point[] Interpolate(Point pt0, Point pt1)
+        {
+            var count = (int)Math.Max(1, Length(pt0, pt1));
+            var points = new Point[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                var t = (i + 1f) / count;
+                var x = (1 - t) * pt0.X + t * pt1.X;
+                var y = (1 - t) * pt0.Y + t * pt1.Y;
+                points[i] = new Point(x, y);
+            }
+
+            return points;
+        }
+
+        private static Point[] FlattenCubic(Point pt0, Point pt1, Point pt2, Point pt3)
+        {
+            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2) + Length(pt2, pt3));
+            var points = new Point[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                var t = (i + 1f) / count;
+                var x = (1 - t) * (1 - t) * (1 - t) * pt0.X +
+                        3 * t * (1 - t) * (1 - t) * pt1.X +
+                        3 * t * t * (1 - t) * pt2.X +
+                        t * t * t * pt3.X;
+                var y = (1 - t) * (1 - t) * (1 - t) * pt0.Y +
+                        3 * t * (1 - t) * (1 - t) * pt1.Y +
+                        3 * t * t * (1 - t) * pt2.Y +
+                        t * t * t * pt3.Y;
+                points[i] = new Point(x, y);
+            }
+
+            return points;
+        }
+
+        private static Point[] FlattenQuadratic(Point pt0, Point pt1, Point pt2)
+        {
+            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
+            var points = new Point[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                var t = (i + 1f) / count;
+                var x = (1 - t) * (1 - t) * pt0.X + 2 * t * (1 - t) * pt1.X + t * t * pt2.X;
+                var y = (1 - t) * (1 - t) * pt0.Y + 2 * t * (1 - t) * pt1.Y + t * t * pt2.Y;
+                points[i] = new Point(x, y);
+            }
+
+            return points;
+        }
+
+        private static Point[] FlattenConic(Point pt0, Point pt1, Point pt2, float weight)
+        {
+            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
+            var points = new Point[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                var t = (i + 1f) / count;
+                var denominator = (1 - t) * (1 - t) + 2 * weight * t * (1 - t) + t * t;
+                var x = (1 - t) * (1 - t) * pt0.X + 2 * weight * t * (1 - t) * pt1.X + t * t * pt2.X;
+                var y = (1 - t) * (1 - t) * pt0.Y + 2 * weight * t * (1 - t) * pt1.Y + t * t * pt2.Y;
+                x /= denominator;
+                y /= denominator;
+                points[i] = new Point(x, y);
+            }
+
+            return points;
+        }
+
+        private static double Length(Point pt0, Point pt1)
+        {
+            return Math.Sqrt(Math.Pow(pt1.X - pt0.X, 2) + Math.Pow(pt1.Y - pt0.Y, 2));
+        }
+
         public static PathGeometry FlattenWithTransform(this PathGeometry pathIn, Func<Point, Point> transform, FlattenOutput flattenOutput)
         {
             var pathOut = new PathGeometry()
@@ -233,82 +309,105 @@ namespace WPFAnimations
             return pathOut;
         }
 
-        static Point[] Interpolate(Point pt0, Point pt1)
+        public static PathGeometry ClonePathGeometry(this PathGeometry pathIn)
         {
-            var count = (int)Math.Max(1, Length(pt0, pt1));
-            var points = new Point[count];
-
-            for (var i = 0; i < count; i++)
+            var pathOut = new PathGeometry()
             {
-                var t = (i + 1f) / count;
-                var x = (1 - t) * pt0.X + t * pt1.X;
-                var y = (1 - t) * pt0.Y + t * pt1.Y;
-                points[i] = new Point(x, y);
+                FillRule = pathIn.FillRule
+            };
+
+            foreach (var figureIn in pathIn.Figures)
+            {
+                var figureOut = figureIn.ClonePathFigure();
+                pathOut.Figures.Add(figureOut);
             }
 
-            return points;
+            return pathOut;
         }
 
-        static Point[] FlattenCubic(Point pt0, Point pt1, Point pt2, Point pt3)
+        public static PathFigure ClonePathFigure(this PathFigure figureIn)
         {
-            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2) + Length(pt2, pt3));
-            var points = new Point[count];
-
-            for (int i = 0; i < count; i++)
+           var figureOut = new PathFigure()
             {
-                var t = (i + 1f) / count;
-                var x = (1 - t) * (1 - t) * (1 - t) * pt0.X +
-                        3 * t * (1 - t) * (1 - t) * pt1.X +
-                        3 * t * t * (1 - t) * pt2.X +
-                        t * t * t * pt3.X;
-                var y = (1 - t) * (1 - t) * (1 - t) * pt0.Y +
-                        3 * t * (1 - t) * (1 - t) * pt1.Y +
-                        3 * t * t * (1 - t) * pt2.Y +
-                        t * t * t * pt3.Y;
-                points[i] = new Point(x, y);
+                IsClosed = figureIn.IsClosed,
+                IsFilled = figureIn.IsClosed,
+                StartPoint = figureIn.StartPoint
+            };
+
+            if (figureIn.Segments is null)
+            {
+                return figureOut;
             }
 
-            return points;
-        }
-
-        static Point[] FlattenQuadratic(Point pt0, Point pt1, Point pt2)
-        {
-            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
-            var points = new Point[count];
-
-            for (var i = 0; i < count; i++)
+            foreach (var pathSegmentIn in figureIn.Segments)
             {
-                var t = (i + 1f) / count;
-                var x = (1 - t) * (1 - t) * pt0.X + 2 * t * (1 - t) * pt1.X + t * t * pt2.X;
-                var y = (1 - t) * (1 - t) * pt0.Y + 2 * t * (1 - t) * pt1.Y + t * t * pt2.Y;
-                points[i] = new Point(x, y);
+                switch (pathSegmentIn)
+                {
+                    case ArcSegment arcSegmentIn:
+                    {
+                        var arcSegmentOut = new ArcSegment()
+                        {
+                            IsLargeArc = arcSegmentIn.IsLargeArc,
+                            Point = arcSegmentIn.Point,
+                            RotationAngle = arcSegmentIn.RotationAngle,
+                            Size = arcSegmentIn.Size,
+                            SweepDirection = arcSegmentIn.SweepDirection
+                        };
+                        figureOut.Segments?.Add(arcSegmentOut);
+                    }
+                        break;
+                    case BezierSegment bezierSegmentIn:
+                    {
+                        var bezierSegmentOut = new BezierSegment()
+                        {
+                            Point1 = bezierSegmentIn.Point1,
+                            Point2 = bezierSegmentIn.Point2,
+                            Point3 = bezierSegmentIn.Point3
+                        };
+                        figureOut.Segments?.Add(bezierSegmentOut);
+                    }
+                        break;
+                    case LineSegment lineSegmentIn:
+                    {
+                        var lineSegmentOut = new BezierSegment()
+                        {
+                            Point1 = lineSegmentIn.Point
+                        };
+                        figureOut.Segments?.Add(lineSegmentOut);
+                    }
+                        break;
+                    case QuadraticBezierSegment quadraticBezierSegmentIn:
+                    {
+                        var quadraticBezierSegmentOut = new QuadraticBezierSegment()
+                        {
+                            Point1 = quadraticBezierSegmentIn.Point1,
+                            Point2 = quadraticBezierSegmentIn.Point2,
+                        };
+                        figureOut.Segments?.Add(quadraticBezierSegmentOut);
+                    }
+                        break;
+                    case PolyLineSegment polyLineSegmentIn:
+                    {
+                        var polyLineSegmentOut = new PolyLineSegment()
+                        {
+                            Points = new AvaloniaList<Point>()
+                        };
+                        foreach (var pt in polyLineSegmentIn.Points)
+                        {
+                            polyLineSegmentOut.Points.Add(pt);
+                        }
+                        figureOut.Segments?.Add(polyLineSegmentOut);
+                    }
+                        break;
+                    default:
+                    {
+                        // TODO:
+                    }
+                        break;
+                }
             }
 
-            return points;
-        }
-
-        static Point[] FlattenConic(Point pt0, Point pt1, Point pt2, float weight)
-        {
-            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
-            var points = new Point[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                var t = (i + 1f) / count;
-                var denominator = (1 - t) * (1 - t) + 2 * weight * t * (1 - t) + t * t;
-                var x = (1 - t) * (1 - t) * pt0.X + 2 * weight * t * (1 - t) * pt1.X + t * t * pt2.X;
-                var y = (1 - t) * (1 - t) * pt0.Y + 2 * weight * t * (1 - t) * pt1.Y + t * t * pt2.Y;
-                x /= denominator;
-                y /= denominator;
-                points[i] = new Point(x, y);
-            }
-
-            return points;
-        }
-
-        static double Length(Point pt0, Point pt1)
-        {
-            return Math.Sqrt(Math.Pow(pt1.X - pt0.X, 2) + Math.Pow(pt1.Y - pt0.Y, 2));
+            return figureOut;
         }
     }
 }

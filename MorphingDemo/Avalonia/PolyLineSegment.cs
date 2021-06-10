@@ -2,7 +2,7 @@
 using Avalonia.Collections;
 using Avalonia.Media;
 
-namespace WPFAnimations
+namespace MorphingDemo.Avalonia
 {
     public sealed class PolyLineSegment : PathSegment
     {
@@ -11,8 +11,8 @@ namespace WPFAnimations
 
         public AvaloniaList<Point> Points
         {
-            get { return GetValue(PointsProperty); }
-            set { SetValue(PointsProperty, value); }
+            get => GetValue(PointsProperty);
+            set => SetValue(PointsProperty, value);
         }
 
         protected override void ApplyTo(StreamGeometryContext ctx)
