@@ -26,7 +26,7 @@ namespace WPFAnimations
 
         private static void MoveFigure(PathFigure source, double p, double progress)
         {
-            PolyLineSegment segment = (PolyLineSegment)source.Segments[0];
+            var segment = (PolyLineSegment)source.Segments[0];
 
             for (int i = 0; i < segment.Points.Count; i++)
             {
@@ -99,7 +99,7 @@ namespace WPFAnimations
 
         public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed)
         {
-            PowerEase powerEase = new PowerEase();
+            var powerEase = new PowerEase();
             int steps = (int)(1 / speed);
             double p = speed;
             List<PathGeometry> cache = new List<PathGeometry>(steps);
@@ -218,8 +218,8 @@ namespace WPFAnimations
 
         public static void MorphFigure(PathFigure source, PathFigure target, double progress)
         {
-            PolyLineSegment sourceSegment = (PolyLineSegment)source.Segments[0];
-            PolyLineSegment targetSegment = (PolyLineSegment)target.Segments[0];
+            var sourceSegment = (PolyLineSegment)source.Segments[0];
+            var targetSegment = (PolyLineSegment)target.Segments[0];
 
             if (sourceSegment.Points.Count < targetSegment.Points.Count)
             {
@@ -287,7 +287,7 @@ namespace WPFAnimations
 
         public static int MorphCollapse(PathFigure source, double progress)
         {
-            PolyLineSegment sourceSegment = (PolyLineSegment)source.Segments[0];
+            var sourceSegment = (PolyLineSegment)source.Segments[0];
 
             //
             // Find Centroid
