@@ -102,7 +102,6 @@ namespace WPFAnimations.Visuals
             dispatcher.InvokeAsync(() =>
             {
                 Block.Foreground = new SolidColorBrush(PrimaryColor);
-                Block.Foreground.Freeze();
 
                 IsOptimized = true;
             });
@@ -126,8 +125,6 @@ namespace WPFAnimations.Visuals
         {
             HideFill(speed * 2, delay + (speed / 4));
         }
-
-        public void Freeze() { }
 
         public void HideOpacity(double speed = 400, double delay = 0)
         {
@@ -263,7 +260,6 @@ namespace WPFAnimations.Visuals
             Path.StrokeDashArray = new AvaloniaList<double>() { 2000, 2000 };
             Path.StrokeDashOffset = -2000;
             Path.Stroke = Stroke;
-            Path.Stroke.Freeze();
 
             var group = new TransformGroup();
 
@@ -309,21 +305,11 @@ namespace WPFAnimations.Visuals
             ShowFill(speed * 2, delay + (speed / 4));
         }
 
-        public void Freeze()
-        {
-            dispatcher.InvokeAsync(() =>
-            {
-                Path.Data.Freeze();
-            });
-        }
-
         public void Optimize()
         {
             dispatcher.InvokeAsync(() =>
             {
                 Path.Fill = new SolidColorBrush(PrimaryColor);
-                Path.Fill.Freeze();
-                Path.Stroke.Freeze();
 
                 IsOptimized = true;
             });
