@@ -206,7 +206,7 @@ namespace WPFAnimations
                     if (map.Contains(j))
                         continue;
                    
-                    var len = Point.Subtract(source.Figures[i].StartPoint, target.Figures[j].StartPoint).LengthSquared;
+                    var len = LengthSquared(source.Figures[i].StartPoint - target.Figures[j].StartPoint);
                     if (len < closest)
                     {
                         closest = len;
@@ -221,6 +221,11 @@ namespace WPFAnimations
                 MorphFigure(source.Figures[i], target.Figures[map[i]], progress);
         }
 
+        private static double LengthSquared(Point point)
+        {
+            return point.X * point.X + point.Y*point.Y;
+        }
+        
         public static void MorphFigure(PathFigure source, PathFigure target, double progress)
         {
             var sourceSegment = (PolyLineSegment)source.Segments[0];
