@@ -24,6 +24,7 @@ namespace WPFAnimations
                 {
                     ctx.LineTo(Points[i]);
                 }
+
                 ctx.EndFigure(false);
             }
         }
