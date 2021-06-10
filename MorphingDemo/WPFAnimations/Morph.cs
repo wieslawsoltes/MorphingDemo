@@ -42,7 +42,7 @@ namespace WPFAnimations
             source.StartPoint = new Point(newX, source.StartPoint.Y);
         }
 
-        private static bool DoFiguresOverlap(PathFigureCollection figures, int index0, int index1, int index2)
+        private static bool DoFiguresOverlap(PathFigures figures, int index0, int index1, int index2)
         {
             if (index2 < figures.Count && index0 >= 0)
             {
@@ -62,7 +62,7 @@ namespace WPFAnimations
             return false;
         }
 
-        private static bool DoFiguresOverlap(PathFigureCollection figures, int index0, int index1)
+        private static bool DoFiguresOverlap(PathFigures figures, int index0, int index1)
         {
             if (index1 < figures.Count && index0 >= 0)
             {
