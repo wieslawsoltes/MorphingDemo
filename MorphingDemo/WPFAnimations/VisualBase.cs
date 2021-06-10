@@ -28,7 +28,7 @@ namespace WPFAnimations.Visuals
             double top = Y;
             double left = X;
 
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 var scaleAnim = AnimationHelper.GetDoubleAnimation(scale, speed, delay);
                 var animY = AnimationHelper.GetDoubleAnimation(y - (top * scaleTranslate), speed, delay);
