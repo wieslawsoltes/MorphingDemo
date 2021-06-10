@@ -20,7 +20,7 @@ namespace MorphingDemo.Avalonia
 
             for (var i = 0; i < count; i++)
             {
-                var t = (i + 1f) / count;
+                var t = (i + 1d) / count;
                 var x = (1 - t) * pt0.X + t * pt1.X;
                 var y = (1 - t) * pt0.Y + t * pt1.Y;
                 points[i] = new Point(x, y);
@@ -36,7 +36,7 @@ namespace MorphingDemo.Avalonia
 
             for (int i = 0; i < count; i++)
             {
-                var t = (i + 1f) / count;
+                var t = (i + 1d) / count;
                 var x = (1 - t) * (1 - t) * (1 - t) * pt0.X +
                         3 * t * (1 - t) * (1 - t) * pt1.X +
                         3 * t * t * (1 - t) * pt2.X +
@@ -58,7 +58,7 @@ namespace MorphingDemo.Avalonia
 
             for (var i = 0; i < count; i++)
             {
-                var t = (i + 1f) / count;
+                var t = (i + 1d) / count;
                 var x = (1 - t) * (1 - t) * pt0.X + 2 * t * (1 - t) * pt1.X + t * t * pt2.X;
                 var y = (1 - t) * (1 - t) * pt0.Y + 2 * t * (1 - t) * pt1.Y + t * t * pt2.Y;
                 points[i] = new Point(x, y);
@@ -74,7 +74,7 @@ namespace MorphingDemo.Avalonia
 
             for (int i = 0; i < count; i++)
             {
-                var t = (i + 1f) / count;
+                var t = (i + 1d) / count;
                 var denominator = (1 - t) * (1 - t) + 2 * weight * t * (1 - t) + t * t;
                 var x = (1 - t) * (1 - t) * pt0.X + 2 * weight * t * (1 - t) * pt1.X + t * t * pt2.X;
                 var y = (1 - t) * (1 - t) * pt0.Y + 2 * weight * t * (1 - t) * pt1.Y + t * t * pt2.Y;
