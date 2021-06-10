@@ -112,7 +112,7 @@ namespace WPFAnimations
 
             for (int i = 0; i < steps; i++)
             {
-                var clone = source.Clone();
+                var clone = source.ClonePathGeometry();
                 var easeP = easing.Ease(p);
 
                 To(clone, target, easeP);
@@ -136,7 +136,7 @@ namespace WPFAnimations
                 var toAdd = target.Figures.Count - source.Figures.Count;
                 for (int i = 0; i < toAdd; i++)
                 {
-                    var clone = last.Clone();
+                    var clone = last.ClonePathFigure();
                     source.Figures.Add(clone);
                 }
             }
@@ -155,7 +155,7 @@ namespace WPFAnimations
 
                 for (int i = 0; i < toAdd; i++)
                 {
-                    var clone = target.Figures[lastIndex].Clone();
+                    var clone = target.Figures[lastIndex].ClonePathFigure();
                     //var clone = target.Figures[(lastIndex - (i % (lastIndex + 1)))].Clone();
 
                     //
@@ -169,11 +169,11 @@ namespace WPFAnimations
                         {
                             if (DoFiguresOverlap(target.Figures, lastIndex - 2, lastIndex - 1, lastIndex))
                             {
-                                clone = target.Figures[lastIndex - 3].Clone();
+                                clone = target.Figures[lastIndex - 3].ClonePathFigure();
                             }
                             else if (lastIndex - 2 > 0)
                             {
-                                clone = target.Figures[lastIndex - 2].Clone();
+                                clone = target.Figures[lastIndex - 2].ClonePathFigure();
                             }
                             else
                             {
