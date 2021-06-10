@@ -2,52 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Animation.Easings;
 using Avalonia.Collections;
 using Avalonia.Media;
 
 namespace WPFAnimations
 {
-    public enum EasingMode
-    {
-        EaseIn,
-        EaseOut,
-        EaseInOut
-    }
-
-    public abstract class EasingFunctionBase
-    {
-        public EasingMode EasingMode = EasingMode.EaseOut;
-
-        public double Ease(double normalizedTime)
-        {
-            switch (EasingMode)
-            {
-                case EasingMode.EaseIn:
-                    return EaseInCore(normalizedTime);
-                case EasingMode.EaseOut:
-                    return 1.0 - EaseInCore(1.0 - normalizedTime);
-                case EasingMode.EaseInOut:
-                default:
-                    return (normalizedTime < 0.5) ?
-                               EaseInCore(       normalizedTime  * 2.0 ) * 0.5 :
-                        (1.0 - EaseInCore((1.0 - normalizedTime) * 2.0)) * 0.5 + 0.5;
-            }
-        }
-
-        protected abstract double EaseInCore(double normalizedTime);
-    }
-
-    public class PowerEase : EasingFunctionBase
-    {
-        public double Power = 2.0;
-
-        protected override double EaseInCore(double normalizedTime)
-        {
-            double power = Math.Max(0.0, Power);
-            return Math.Pow(normalizedTime, power);
-        }
-    }
-    
     public static class Morph
     {
         public static bool Collapse(PathGeometry sourceGeometry, double progress)
@@ -145,7 +105,7 @@ namespace WPFAnimations
 
         public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed)
         {
-            var powerEase = new PowerEase();
+            var easing = new ExponentialEaseOut();
             int steps = (int)(1 / speed);
             double p = speed;
             var cache = new List<PathGeometry>(steps);
@@ -153,7 +113,7 @@ namespace WPFAnimations
             for (int i = 0; i < steps; i++)
             {
                 var clone = source.Clone();
-                var easeP = powerEase.Ease(p);
+                var easeP = easing.Ease(p);
 
                 To(clone, target, easeP);
 
