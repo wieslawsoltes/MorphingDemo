@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
@@ -23,7 +24,7 @@ namespace WPFAnimations.Visuals
         public GradientStop EndColor { get; set; }
         public Color PrimaryColor { get; set; }
 
-        public DoubleCollection StrokeArray { get; set; }
+        public new AvaloniaList<double> StrokeArray { get; set; }
         public double StrokeDashOffset { get; set; }
 
         public double FontSize { get; set; }
@@ -53,10 +54,10 @@ namespace WPFAnimations.Visuals
                 var stopStart = new GradientStop() { Color = color, Offset = -1 };
                 var stopEnd = new GradientStop() { Color = Colors.Transparent, Offset = -1 };
 
-                LinearGradientBrush linearGradientBrush = new LinearGradientBrush();
-                linearGradientBrush.StartPoint = new Point(0, 0);
-                linearGradientBrush.EndPoint = new Point(1, 0);
-                linearGradientBrush.GradientStops = new GradientStopCollection();
+                var linearGradientBrush = new LinearGradientBrush();
+                linearGradientBrush.StartPoint = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+                linearGradientBrush.EndPoint = new RelativePoint(new Point(1, 0), RelativeUnit.Relative);
+                linearGradientBrush.GradientStops = new GradientStops();
                 linearGradientBrush.GradientStops.Add(stopStart);
                 linearGradientBrush.GradientStops.Add(stopEnd);
 
@@ -190,7 +191,7 @@ namespace WPFAnimations.Visuals
         public GradientStop EndColor { get; set; }
         public Color PrimaryColor { get; set; }
 
-        public DoubleCollection StrokeArray { get; set; }
+        public new AvaloniaList<double> StrokeArray { get; set; }
         public double StrokeDashOffset { get; set; }
 
         public double FontSize { get; set; }
@@ -227,7 +228,7 @@ namespace WPFAnimations.Visuals
             var typeface = new Typeface(fontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
             var formattedText = new FormattedText(text, culture, flow, typeface, fontSize, Brushes.White, 100);
 
-            var geometry = formattedText.BuildGeometry(new System.Windows.Point(x, y));
+            var geometry = formattedText.BuildGeometry(new Point(x, y));
             var pathGeometry = geometry.GetFlattenedPathGeometry();
             var unfrozen = pathGeometry.Clone();
 
@@ -247,10 +248,10 @@ namespace WPFAnimations.Visuals
             var stopStart = new GradientStop() { Color = color, Offset = -1 };
             var stopEnd = new GradientStop() { Color = Colors.Transparent, Offset = -1 };
 
-            LinearGradientBrush linearGradientBrush = new LinearGradientBrush();
-            linearGradientBrush.StartPoint = new Point(0, 0);
-            linearGradientBrush.EndPoint = new Point(1, 0);
-            linearGradientBrush.GradientStops = new GradientStopCollection();
+            var linearGradientBrush = new LinearGradientBrush();
+            linearGradientBrush.StartPoint = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+            linearGradientBrush.EndPoint = new RelativePoint(new Point(1, 0), RelativeUnit.Relative);
+            linearGradientBrush.GradientStops = new GradientStops();
             linearGradientBrush.GradientStops.Add(stopStart);
             linearGradientBrush.GradientStops.Add(stopEnd);
 
@@ -259,7 +260,7 @@ namespace WPFAnimations.Visuals
             Path = new Path();
             Path.Data = pathGeometry;
             Path.Fill = linearGradientBrush;
-            Path.StrokeDashArray = new DoubleCollection() { 2000, 2000 };
+            Path.StrokeDashArray = new AvaloniaList<double>() { 2000, 2000 };
             Path.StrokeDashOffset = -2000;
             Path.Stroke = Stroke;
             Path.Stroke.Freeze();
