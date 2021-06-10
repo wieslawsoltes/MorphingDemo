@@ -1,3 +1,4 @@
+#if false
 using Avalonia.Media;
 using Avalonia.Threading;
 
@@ -50,3 +51,4 @@ namespace WPFAnimations.Visuals
         }
     }
 }
+#endif

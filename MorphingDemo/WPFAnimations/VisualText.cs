@@ -1,3 +1,4 @@
+#if false
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -857,3 +858,4 @@ namespace WPFAnimations.Visuals
         }
     }
 }
+#endif
