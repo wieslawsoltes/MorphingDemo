@@ -50,6 +50,7 @@ namespace WPFAnimations
                 g1.Figures.Add(figures[index1]);
                 var g2 = new PathGeometry();
                 g2.Figures.Add(figures[index0]);
+                // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.geometry.fillcontainswithdetail?view=net-5.0
                 var result0 = g0.FillContainsWithDetail(g1);
                 var result1 = g0.FillContainsWithDetail(g2);
 
@@ -71,6 +72,7 @@ namespace WPFAnimations
                 g1.Figures.Add(figures[index1]);
                 var g2 = new PathGeometry();
                 g2.Figures.Add(figures[index0]);
+                // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.geometry.fillcontainswithdetail?view=net-5.0
                 var result = g1.FillContainsWithDetail(g2);
                 return result == IntersectionDetail.FullyContains || result == IntersectionDetail.FullyInside;
             }
