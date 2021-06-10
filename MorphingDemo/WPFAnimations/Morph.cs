@@ -44,9 +44,12 @@ namespace WPFAnimations
         {
             if (index2 < figures.Count && index0 >= 0)
             {
-                PathGeometry g0 = new PathGeometry(new[] { figures[index2] });
-                PathGeometry g1 = new PathGeometry(new[] { figures[index1] });
-                PathGeometry g2 = new PathGeometry(new[] { figures[index0] });
+                var g0 = new PathGeometry();
+                g0.Figures.Add(figures[index2]);
+                var g1 = new PathGeometry();
+                g1.Figures.Add(figures[index1]);
+                var g2 = new PathGeometry();
+                g2.Figures.Add(figures[index0]);
                 var result0 = g0.FillContainsWithDetail(g1);
                 var result1 = g0.FillContainsWithDetail(g2);
 
@@ -64,8 +67,10 @@ namespace WPFAnimations
         {
             if (index1 < figures.Count && index0 >= 0)
             {
-                PathGeometry g1 = new PathGeometry(new[] { figures[index1] });
-                PathGeometry g2 = new PathGeometry(new[] { figures[index0] });
+                var g1 = new PathGeometry();
+                g1.Figures.Add(figures[index1]);
+                var g2 = new PathGeometry();
+                g2.Figures.Add(figures[index0]);
                 var result = g1.FillContainsWithDetail(g2);
                 return result == IntersectionDetail.FullyContains || result == IntersectionDetail.FullyInside;
             }
