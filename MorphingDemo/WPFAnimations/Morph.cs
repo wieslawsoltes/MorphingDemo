@@ -7,6 +7,47 @@ using Avalonia.Media;
 
 namespace WPFAnimations
 {
+    public enum EasingMode
+    {
+        EaseIn,
+        EaseOut,
+        EaseInOut
+    }
+
+    public abstract class EasingFunctionBase
+    {
+        public EasingMode EasingMode = EasingMode.EaseOut;
+
+        public double Ease(double normalizedTime)
+        {
+            switch (EasingMode)
+            {
+                case EasingMode.EaseIn:
+                    return EaseInCore(normalizedTime);
+                case EasingMode.EaseOut:
+                    return 1.0 - EaseInCore(1.0 - normalizedTime);
+                case EasingMode.EaseInOut:
+                default:
+                    return (normalizedTime < 0.5) ?
+                               EaseInCore(       normalizedTime  * 2.0 ) * 0.5 :
+                        (1.0 - EaseInCore((1.0 - normalizedTime) * 2.0)) * 0.5 + 0.5;
+            }
+        }
+
+        protected abstract double EaseInCore(double normalizedTime);
+    }
+
+    public class PowerEase : EasingFunctionBase
+    {
+        public double Power = 2.0;
+
+        protected override double EaseInCore(double normalizedTime)
+        {
+            double power = Math.Max(0.0, Power);
+            return Math.Pow(normalizedTime, power);
+        }
+    }
+    
     public static class Morph
     {
         public static bool Collapse(PathGeometry sourceGeometry, double progress)
