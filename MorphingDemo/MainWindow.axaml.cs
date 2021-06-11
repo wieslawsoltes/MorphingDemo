@@ -47,11 +47,12 @@ namespace MorphingDemo
                 }
             };
             slider.Value = 0;
-            path.Data = cache[0];
+
             //path.Data = source;
             //path.Data = sourceFlattened;
             //path.Data = target;
             //path.Data = targetFlattened;
+            path.Data = cache[0];
         }
 
         private void InitializeComponent()
