@@ -164,9 +164,9 @@ namespace WPFAnimations
                     // We try to detect if our last shape has an overlapping geometry
                     // if it does then we will clone the previrous shape.
                     //
-                    /* TODO:
                     if (lastIndex > 0)
                     {
+                        /* TODO:
                         if (DoFiguresOverlap(target.Figures, lastIndex - 1, lastIndex))
                         {
                             if (DoFiguresOverlap(target.Figures, lastIndex - 2, lastIndex - 1, lastIndex))
@@ -182,13 +182,12 @@ namespace WPFAnimations
                                 CollapseFigure(clone);
                             }
                         }
+                        //*/
                     }
                     else
                     {
                         CollapseFigure(clone);
-                    }*/
-                    // TODO:
-                    CollapseFigure(clone);
+                    }
 
                     target.Figures.Add(clone);
                 }
