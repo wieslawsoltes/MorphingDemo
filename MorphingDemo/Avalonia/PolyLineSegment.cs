@@ -19,7 +19,7 @@ namespace MorphingDemo.Avalonia
         {
             if (Points?.Count > 0)
             {
-                for (int i = 1; i < Points.Count; i++)
+                for (int i = 0; i < Points.Count; i++)
                 {
                     ctx.LineTo(Points[i]);
                 }
