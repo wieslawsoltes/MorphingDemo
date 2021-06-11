@@ -6,9 +6,9 @@
         x:Class="MorphingDemo.MainWindow"
         Title="MorphingDemo">
     <DockPanel>
-        <Slider Name="Slider" DockPanel.Dock="Bottom"/>
+        <Slider Name="slider" DockPanel.Dock="Bottom"/>
         <Viewbox Stretch="Uniform">
-            <Path Name="Path" Stroke="Black" StrokeThickness="0" Fill="Red"/>
+            <Path Name="path" Stroke="Black" StrokeThickness="0" Fill="Red"/>
         </Viewbox>
     </DockPanel>
 </Window>
