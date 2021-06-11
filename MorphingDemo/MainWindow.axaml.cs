@@ -21,14 +21,17 @@ namespace MorphingDemo
 
             var source = PathGeometry.Parse("M0 0L15 0L15 15L0 15L0 0Z");
             var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+            //var sourceFlattened = source.Flatten(FlattenOutput.Lines);
 
             var target = PathGeometry.Parse("M10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3ZM2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10Z");
             var targetFlattened = target.Flatten(FlattenOutput.PolyLines);
+            //var targetFlattened = target.Flatten(FlattenOutput.Lines);
 
             var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01);
 
             var path = this.FindControl<Path>("Path");
             var slider = this.FindControl<Slider>("Slider");
+
             slider.Minimum = 0;
             slider.Maximum = cache.Count - 1;
             slider.SmallChange = 1;
