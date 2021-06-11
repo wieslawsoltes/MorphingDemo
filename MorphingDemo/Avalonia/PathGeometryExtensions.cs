@@ -336,7 +336,7 @@ namespace MorphingDemo.Avalonia
            var figureOut = new PathFigure()
             {
                 IsClosed = figureIn.IsClosed,
-                IsFilled = figureIn.IsClosed,
+                IsFilled = figureIn.IsFilled,
                 StartPoint = figureIn.StartPoint
             };
 
