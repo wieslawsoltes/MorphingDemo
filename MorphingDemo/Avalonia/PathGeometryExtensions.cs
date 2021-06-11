@@ -34,7 +34,7 @@ namespace MorphingDemo.Avalonia
             var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2) + Length(pt2, pt3));
             var points = new Point[count];
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var t = (i + 1d) / count;
                 var x = (1 - t) * (1 - t) * (1 - t) * pt0.X +
@@ -72,7 +72,7 @@ namespace MorphingDemo.Avalonia
             var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
             var points = new Point[count];
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var t = (i + 1d) / count;
                 var denominator = (1 - t) * (1 - t) + 2 * weight * t * (1 - t) + t * t;
