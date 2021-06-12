@@ -1,18 +1,20 @@
 ﻿// https://www.firstpr.com.au/dsp/pink-noise/
+// Voss algorithm which creates pink noise by adding a series of white noise sources at successively lower octaves.
+
 using System;
 
 namespace PolyLineAnimation
 {
     public class PinkNumber
     {
+        private static Random s_random = new Random();
+
+        private static int rand() => s_random.Next();
+
         private int max_key;
         private int key;
         private uint[] white_values = new uint[5];
         private uint range;
-
-        private static Random s_random = new Random();
-
-        private static int rand() => s_random.Next();
 
         public PinkNumber(uint range = 128)
         {
@@ -20,7 +22,7 @@ namespace PolyLineAnimation
             this.range = range;
             key = 0;
             for (int i = 0; i < 5; i++)
-                white_values[i] = (uint)(rand() % (range / 5));
+                white_values[i] = (uint) (rand() % (range / 5));
         }
 
         public int GetNextValue()
@@ -40,11 +42,11 @@ namespace PolyLineAnimation
                 // If bit changed get new random number for corresponding
                 // white_value
                 if ((diff & (1 << i)) != 0)
-                    white_values[i] = (uint)(rand() % (range / 5));
+                    white_values[i] = (uint) (rand() % (range / 5));
                 sum += white_values[i];
             }
 
-            return (int)sum;
+            return (int) sum;
         }
     }
 }
