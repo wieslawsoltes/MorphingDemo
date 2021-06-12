@@ -83,7 +83,7 @@ namespace WPFAnimations
         private static void CollapseFigure(PathFigure figure)
         {
             var points = ((PolyLineSegment)figure.Segments[0]).Points;
-            var centroid = GetCentroid(points, points.Count);
+            var centroid = GetCentroid(points);
 
             for (int p = 0; p < points.Count; p++)
             {
@@ -305,7 +305,7 @@ namespace WPFAnimations
             //
             // Find Centroid
             //
-            var centroid = GetCentroid(sourceSegment.Points, sourceSegment.Points.Count);
+            var centroid = GetCentroid(sourceSegment.Points);
             for (int i = 0; i < sourceSegment.Points.Count; i++)
             {
                 var fromX = sourceSegment.Points[i].X;
@@ -333,12 +333,12 @@ namespace WPFAnimations
             return 0;
         }
 
-        public static Point GetCentroid(AvaloniaList<Point> nodes, int count)
+        public static Point GetCentroid(IList<Point> nodes)
         {
             double x = 0, y = 0, area = 0, k;
-            Point a, b = nodes[count - 1];
+            Point a, b = nodes[nodes.Count - 1];
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < nodes.Count; i++)
             {
                 a = nodes[i];
 
