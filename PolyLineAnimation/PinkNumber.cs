@@ -1,19 +1,18 @@
 ﻿// https://www.firstpr.com.au/dsp/pink-noise/
-
 using System;
-using System.Runtime.InteropServices;
 
 namespace PolyLineAnimation
 {
-    class PinkNumber
+    public class PinkNumber
     {
-        [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern Int32 rand();
-
         private int max_key;
         private int key;
         private uint[] white_values = new uint[5];
         private uint range;
+
+        private static Random s_random = new Random();
+
+        private static int rand() => s_random.Next();
 
         public PinkNumber(uint range = 128)
         {
