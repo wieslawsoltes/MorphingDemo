@@ -12,8 +12,7 @@
     <Viewbox Stretch="Uniform" 
              Margin="0,6,0,6"
              ClipToBounds="False">
-      <Path Name="path" 
-            Width="12.56"
+      <Path Name="path"
             Height="3"
             StrokeThickness="0.01" 
             ClipToBounds="False">
