@@ -9,15 +9,18 @@
   <Window.Styles>
     <Style Selector="Path.animation">
       <Style.Animations>
-        <Animation Duration="0:0:3" IterationCount="INFINITE" Easing="ElasticEaseInOut">
+        <Animation Duration="0:0:3" IterationCount="INFINITE" Easing="SplineEasing">
           <KeyFrame Cue="0%">
             <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
           </KeyFrame>
           <KeyFrame Cue="50%">
             <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+            <Setter Property="StrokeThickness" Value="0.005"/>
           </KeyFrame>
           <KeyFrame Cue="100%">
             <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
           </KeyFrame>
         </Animation>
       </Style.Animations>
@@ -33,7 +36,6 @@
       <Path Name="path"
             Classes="animation"
             Height="3"
-            StrokeThickness="0.01" 
             ClipToBounds="False">
         <Path.Fill>
           <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%" Opacity="0.2">
