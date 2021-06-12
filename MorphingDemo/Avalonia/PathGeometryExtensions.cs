@@ -15,7 +15,7 @@ namespace Avalonia
     {
         private static Point[] Interpolate(Point pt0, Point pt1)
         {
-            var count = (int)Math.Max(1, Length(pt0, pt1));
+            var count = (int) Math.Max(1, Length(pt0, pt1));
             var points = new Point[count];
 
             for (var i = 0; i < count; i++)
@@ -31,7 +31,7 @@ namespace Avalonia
 
         private static Point[] FlattenCubic(Point pt0, Point pt1, Point pt2, Point pt3)
         {
-            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2) + Length(pt2, pt3));
+            var count = (int) Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2) + Length(pt2, pt3));
             var points = new Point[count];
 
             for (var i = 0; i < count; i++)
@@ -53,7 +53,7 @@ namespace Avalonia
 
         private static Point[] FlattenQuadratic(Point pt0, Point pt1, Point pt2)
         {
-            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
+            var count = (int) Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
             var points = new Point[count];
 
             for (var i = 0; i < count; i++)
@@ -69,7 +69,7 @@ namespace Avalonia
 
         private static Point[] FlattenConic(Point pt0, Point pt1, Point pt2, float weight)
         {
-            var count = (int)Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
+            var count = (int) Math.Max(1, Length(pt0, pt1) + Length(pt1, pt2));
             var points = new Point[count];
 
             for (var i = 0; i < count; i++)
@@ -144,7 +144,7 @@ namespace Avalonia
                                 case FlattenOutput.PolyLines:
                                 {
                                     var polyLineSegmentOut = new PolyLineSegment();
-                                    
+
                                     for (var i = 0; i < points.Length; i++)
                                     {
                                         polyLineSegmentOut.Points?.Add(points[i]);
@@ -302,6 +302,7 @@ namespace Avalonia
                 }
 #endif
             }
+
             return pathOut;
         }
 
@@ -323,7 +324,7 @@ namespace Avalonia
 
         public static PathFigure ClonePathFigure(this PathFigure figureIn)
         {
-           var figureOut = new PathFigure()
+            var figureOut = new PathFigure()
             {
                 IsClosed = figureIn.IsClosed,
                 IsFilled = figureIn.IsFilled,
@@ -390,6 +391,7 @@ namespace Avalonia
                         {
                             polyLineSegmentOut.Points?.Add(pt);
                         }
+
                         figureOut.Segments?.Add(polyLineSegmentOut);
                     }
                         break;
