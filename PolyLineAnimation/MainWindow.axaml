@@ -2,9 +2,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:PolyLineAnimation"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PolyLineAnimation.MainWindow"
         Title="PolyLineAnimation">
+  <Window.Styles>
+    <Style Selector="Path.animation">
+      <Style.Animations>
+        <Animation Duration="0:0:3" IterationCount="INFINITE" Easing="ElasticEaseInOut">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+          </KeyFrame>
+          <KeyFrame Cue="50%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+  </Window.Styles>
   <DockPanel>
     <Slider Name="slider"
             IsVisible="False"
@@ -13,6 +31,7 @@
              Margin="0,6,0,6"
              ClipToBounds="False">
       <Path Name="path"
+            Classes="animation"
             Height="3"
             StrokeThickness="0.01" 
             ClipToBounds="False">
