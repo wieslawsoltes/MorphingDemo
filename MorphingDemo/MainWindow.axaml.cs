@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using MorphingDemo.Avalonia;
 using WPFAnimations;
 
 namespace MorphingDemo

@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Media;
 
-namespace MorphingDemo.Avalonia
+namespace Avalonia
 {
     public enum FlattenOutput
     {
@@ -143,13 +143,11 @@ namespace MorphingDemo.Avalonia
                                     break;
                                 case FlattenOutput.PolyLines:
                                 {
-                                    var polyLineSegmentOut = new PolyLineSegment()
-                                    {
-                                        Points = new AvaloniaList<Point>()
-                                    };
+                                    var polyLineSegmentOut = new PolyLineSegment();
+                                    
                                     for (var i = 0; i < points.Length; i++)
                                     {
-                                        polyLineSegmentOut.Points.Add(points[i]);
+                                        polyLineSegmentOut.Points?.Add(points[i]);
                                     }
 
                                     figureOut.Segments?.Add(polyLineSegmentOut);
@@ -177,13 +175,11 @@ namespace MorphingDemo.Avalonia
                                     break;
                                 case FlattenOutput.PolyLines:
                                 {
-                                    var polyLineSegmentOut = new PolyLineSegment()
-                                    {
-                                        Points = new AvaloniaList<Point>()
-                                    };
+                                    var polyLineSegmentOut = new PolyLineSegment();
+
                                     for (var i = 0; i < points.Length; i++)
                                     {
-                                        polyLineSegmentOut.Points.Add(points[i]);
+                                        polyLineSegmentOut.Points?.Add(points[i]);
                                     }
 
                                     figureOut.Segments?.Add(polyLineSegmentOut);
@@ -211,13 +207,11 @@ namespace MorphingDemo.Avalonia
                                     break;
                                 case FlattenOutput.PolyLines:
                                 {
-                                    var polyLineSegmentOut = new PolyLineSegment()
-                                    {
-                                        Points = new AvaloniaList<Point>()
-                                    };
+                                    var polyLineSegmentOut = new PolyLineSegment();
+
                                     for (var i = 0; i < points.Length; i++)
                                     {
-                                        polyLineSegmentOut.Points.Add(points[i]);
+                                        polyLineSegmentOut.Points?.Add(points[i]);
                                     }
 
                                     figureOut.Segments?.Add(polyLineSegmentOut);
@@ -249,13 +243,11 @@ namespace MorphingDemo.Avalonia
                                             break;
                                         case FlattenOutput.PolyLines:
                                         {
-                                            var polyLineSegmentOut = new PolyLineSegment()
-                                            {
-                                                Points = new AvaloniaList<Point>()
-                                            };
+                                            var polyLineSegmentOut = new PolyLineSegment();
+
                                             for (var j = 0; j < points.Length; j++)
                                             {
-                                                polyLineSegmentOut.Points.Add(points[j]);
+                                                polyLineSegmentOut.Points?.Add(points[j]);
                                             }
 
                                             figureOut.Segments?.Add(polyLineSegmentOut);
@@ -294,13 +286,11 @@ namespace MorphingDemo.Avalonia
                             break;
                         case FlattenOutput.PolyLines:
                         {
-                            var polyLineSegmentOut = new PolyLineSegment()
-                            {
-                                Points = new AvaloniaList<Point>()
-                            };
+                            var polyLineSegmentOut = new PolyLineSegment();
+
                             for (var i = 0; i < points.Length; i++)
                             {
-                                polyLineSegmentOut.Points.Add(points[i]);
+                                polyLineSegmentOut.Points?.Add(points[i]);
                             }
 
                             figureOut.Segments?.Add(polyLineSegmentOut);
@@ -394,13 +384,11 @@ namespace MorphingDemo.Avalonia
                         break;
                     case PolyLineSegment polyLineSegmentIn:
                     {
-                        var polyLineSegmentOut = new PolyLineSegment()
-                        {
-                            Points = new AvaloniaList<Point>()
-                        };
+                        var polyLineSegmentOut = new PolyLineSegment();
+
                         foreach (var pt in polyLineSegmentIn.Points)
                         {
-                            polyLineSegmentOut.Points.Add(pt);
+                            polyLineSegmentOut.Points?.Add(pt);
                         }
                         figureOut.Segments?.Add(polyLineSegmentOut);
                     }
