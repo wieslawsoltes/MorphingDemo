@@ -6,66 +6,50 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Threading;
 
 namespace PolyLineAnimation
 {
     public partial class MainWindow : Window
     {
+        public static PathGeometry PathGeometrySine { get; set; }
+
+        public static PathGeometry PathGeometryCosine { get; set; }
+
+        public static PathGeometry PathGeometryPinkNoise { get; set; }
+
+        static MainWindow()
+        {
+            PathGeometrySine = CreatePathGeometrySine();
+            PathGeometryCosine = CreatePathGeometryCosine();
+            PathGeometryPinkNoise = CreatePathGeometryPinkNoise();
+        }
+
         public MainWindow()
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            
-#if false
+            //Initialize();
+        }
+
+        private void Initialize()
+        {
             // SOURCE
-
-            var sourcePoints = new List<Point>();
-            for (double x = 0; x <= Math.PI * 4; x += 0.01)
-            {
-                var point = new Point(x, Math.Sin(x) + 1);
-                sourcePoints.Add(point);
-            }
-            var source = Morph.CreatePathGeometry(sourcePoints);
-            var sourceFlattened = source;
-            //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+#if false
+            var sourceFlattened = CreatePathGeometrySine();
 #else
-            // SOURCE Pink Noise using Voss algorithm
-            
-            var sourcePoints = new List<Point>();
-            var pn = new PinkNumber();
-            for (double x = 0; x <= Math.PI * 4; x += 0.01)
-            {
-                var next = pn.GetNextValue();
-                var point = new Point(x, next);
-                sourcePoints.Add(point);
-            }
-
-            var max = sourcePoints.Max(p => p.Y);
-            sourcePoints = sourcePoints.Select(p => new Point(p.X, p.Y / max)).ToList();
-
-            var source = Morph.CreatePathGeometry(sourcePoints);
-            var sourceFlattened = source;
-            //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+            var sourceFlattened = CreatePathGeometryPinkNoise();
 #endif
 
             // TARGET
-            
-            var targetPoints = new List<Point>();
-            for (double x = 0; x <= Math.PI * 4; x += 0.01)
-            {
-                var point = new Point(x, Math.Cos(x) + 1);
-                targetPoints.Add(point);
-            }
-            
-            var target = Morph.CreatePathGeometry(targetPoints);
-            var targetFlattened = target;
-            //var targetFlattened = target.Flatten(FlattenOutput.PolyLines);     
+
+            var targetFlattened = CreatePathGeometryCosine();
 
             // CACHE
-            
+
             var easing = new ElasticEaseOut(); // ExponentialEaseOut, BounceEaseOut, ElasticEaseOut
             var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
 
@@ -84,7 +68,7 @@ namespace PolyLineAnimation
             {
                 if (args.Property == Slider.ValueProperty)
                 {
-                    var index = (int)slider.Value;
+                    var index = (int) slider.Value;
                     path.Data = cache[index];
                 }
             };
@@ -109,6 +93,59 @@ namespace PolyLineAnimation
 #else
             slider.IsVisible = true;
 #endif
+        }
+
+        private static PathGeometry CreatePathGeometryCosine()
+        {
+            var targetPoints = new List<Point>();
+            for (double x = 0; x <= Math.PI * 4; x += 0.01)
+            {
+                var point = new Point(x, Math.Cos(x) + 1);
+                targetPoints.Add(point);
+            }
+
+            var target = Morph.CreatePathGeometry(targetPoints);
+            var targetFlattened = target;
+            //var targetFlattened = target.Flatten(FlattenOutput.PolyLines);  
+
+            return targetFlattened;
+        }
+
+        private static PathGeometry CreatePathGeometrySine()
+        {
+            var sourcePoints = new List<Point>();
+            for (double x = 0; x <= Math.PI * 4; x += 0.01)
+            {
+                var point = new Point(x, Math.Sin(x) + 1);
+                sourcePoints.Add(point);
+            }
+
+            var source = Morph.CreatePathGeometry(sourcePoints);
+            var sourceFlattened = source;
+            //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+
+            return sourceFlattened;
+        }
+
+        private static PathGeometry CreatePathGeometryPinkNoise()
+        {
+            var sourcePoints = new List<Point>();
+            var pn = new PinkNumber();
+            for (double x = 0; x <= Math.PI * 4; x += 0.01)
+            {
+                var next = pn.GetNextValue();
+                var point = new Point(x, next);
+                sourcePoints.Add(point);
+            }
+
+            var max = sourcePoints.Max(p => p.Y);
+            sourcePoints = sourcePoints.Select(p => new Point(p.X, p.Y / max)).ToList();
+
+            var source = Morph.CreatePathGeometry(sourcePoints);
+            var sourceFlattened = source;
+            //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+
+            return sourceFlattened;
         }
 
         private void InitializeComponent()
