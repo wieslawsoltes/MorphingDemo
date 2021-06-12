@@ -15,6 +15,27 @@ namespace PolyLineAnimation
             double p = speed;
             var cache = new List<PathGeometry>(steps);
 
+            //cache.Add(source.ClonePathGeometry());
+
+            for (int i = 0; i < steps; i++)
+            {
+                var clone = source.ClonePathGeometry();
+                var easeP = easing.Ease(p);
+
+                To(clone, target, easeP);
+
+                p += speed;
+
+                cache.Add(clone);
+            }
+
+            //cache.Add(target.ClonePathGeometry());
+
+            return cache;
+        }
+
+        public static void To(PathGeometry source, PathGeometry target, double progress)
+        {
             var sourceFigure = source.Figures[0];
             var sourceSegment = sourceFigure.Segments[0] as PolyLineSegment;
 
@@ -23,31 +44,12 @@ namespace PolyLineAnimation
 
             Debug.Assert(sourceSegment.Points.Count == targetSegment.Points.Count);
 
-            cache.Add(source.ClonePathGeometry());
+            sourceFigure.StartPoint = Interpolate(sourceFigure.StartPoint, targetFigure.StartPoint, progress);
 
-            for (int i = 0; i < steps; i++)
+            for (int j = 0; j < sourceSegment.Points.Count; j++)
             {
-                var clone = source.ClonePathGeometry();
-                var progress = easing.Ease(p);
-
-                var cloneFigure = clone.Figures[0];
-                var cloneSegment = cloneFigure.Segments[0] as PolyLineSegment;
-
-                cloneFigure.StartPoint = Interpolate(sourceFigure.StartPoint, targetFigure.StartPoint, progress);
-
-                for (int j = 0; j < sourceSegment.Points.Count; j++)
-                {
-                    cloneSegment.Points[j] = Interpolate(sourceSegment.Points[j], targetSegment.Points[j], progress);
-                }
-
-                p += speed;
-
-                cache.Add(clone);
+                sourceSegment.Points[j] = Interpolate(sourceSegment.Points[j], targetSegment.Points[j], progress);
             }
-
-            cache.Add(target.ClonePathGeometry());
-
-            return cache;
         }
 
         public static double Interpolate(double from, double to, double progress)
