@@ -43,7 +43,7 @@ namespace PolyLineAnimation
             }
 
             var max = sourcePoints.Max(p => p.Y);
-            sourcePoints = sourcePoints.Select(p => new Point(p.X, p.Y / max + 1)).ToList();
+            sourcePoints = sourcePoints.Select(p => new Point(p.X, p.Y / max)).ToList();
 
             var source = Morph.CreatePathGeometry(sourcePoints);
             var sourceFlattened = source;
