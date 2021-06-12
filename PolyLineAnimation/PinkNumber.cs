@@ -22,7 +22,7 @@ namespace PolyLineAnimation
             this.range = range;
             key = 0;
             for (int i = 0; i < 5; i++)
-                white_values[i] = (uint) (rand() % (range / 5));
+                white_values[i] = (uint) (rand() % (range / 6));
         }
 
         public int GetNextValue()
@@ -36,13 +36,13 @@ namespace PolyLineAnimation
             // Exclusive-Or previous value with current value. This gives
             // a list of bits that have changed.
             int diff = last_key ^ key;
-            sum = 0;
+            sum = (uint) (rand() % (range/6));
             for (int i = 0; i < 5; i++)
             {
                 // If bit changed get new random number for corresponding
                 // white_value
                 if ((diff & (1 << i)) != 0)
-                    white_values[i] = (uint) (rand() % (range / 5));
+                    white_values[i] = (uint) (rand() % (range / 6));
                 sum += white_values[i];
             }
 
