@@ -5,6 +5,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 
 namespace PolyLineAnimation
 {
@@ -64,6 +65,21 @@ namespace PolyLineAnimation
             };
             slider.Value = 0;
             path.Data = cache[0];
+
+            var timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1 / 60.0);
+            timer.Tick += (sender, e) =>
+            {
+                if (slider.Value < slider.Maximum)
+                {
+                    slider.Value++;
+                }
+                else
+                {
+                    slider.Value = slider.Minimum;
+                }
+            };
+            timer.Start();
         }
 
         private void InitializeComponent()
