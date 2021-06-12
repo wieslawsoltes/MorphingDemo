@@ -226,37 +226,41 @@ namespace Avalonia
                         {
                             if (polyLineSegmentIn.Points.Count > 0)
                             {
-                                for (var i = 0; i < polyLineSegmentIn.Points.Count; i++)
+                                switch (flattenOutput)
                                 {
-                                    var points = Interpolate(lastPoint, polyLineSegmentIn.Points[i]);
-
-                                    switch (flattenOutput)
+                                    case FlattenOutput.Lines:
                                     {
-                                        case FlattenOutput.Lines:
+                                        for (var i = 0; i < polyLineSegmentIn.Points.Count; i++)
                                         {
-                                            for (var j = 0; j < points.Length; j++)
+                                            var points = Interpolate(lastPoint, polyLineSegmentIn.Points[i]);
+                                            for (int j = 0; j < points.Length; j++)
                                             {
                                                 var lineSegmentOut = new LineSegment {Point = points[j]};
                                                 figureOut.Segments?.Add(lineSegmentOut);
                                             }
+                                            lastPoint = polyLineSegmentIn.Points[i];
                                         }
-                                            break;
-                                        case FlattenOutput.PolyLines:
-                                        {
-                                            var polyLineSegmentOut = new PolyLineSegment();
+                                    }
+                                        break;
+                                    case FlattenOutput.PolyLines:
+                                    {
+                                        var polyLineSegmentOut = new PolyLineSegment();
 
-                                            for (var j = 0; j < points.Length; j++)
+                                        for (var i = 0; i < polyLineSegmentIn.Points.Count; i++)
+                                        {
+                                            var points = Interpolate(lastPoint, polyLineSegmentIn.Points[i]);
+                                            for (int j = 0; j < points.Length; j++)
                                             {
                                                 polyLineSegmentOut.Points?.Add(points[j]);
                                             }
-
-                                            figureOut.Segments?.Add(polyLineSegmentOut);
+                                            lastPoint = polyLineSegmentIn.Points[i];
                                         }
-                                            break;
-                                    }
 
-                                    lastPoint = polyLineSegmentIn.Points[i];
+                                        figureOut.Segments?.Add(polyLineSegmentOut);
+                                    }
+                                        break;
                                 }
+
                             }
                         }
                             break;
