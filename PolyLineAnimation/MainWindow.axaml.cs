@@ -18,8 +18,10 @@ namespace PolyLineAnimation
 #if DEBUG
             this.AttachDevTools();
 #endif
+            
+#if false
             // SOURCE
-/*
+
             var sourcePoints = new List<Point>();
             for (double x = 0; x <= Math.PI * 4; x += 0.01)
             {
@@ -29,8 +31,7 @@ namespace PolyLineAnimation
             var source = Morph.CreatePathGeometry(sourcePoints);
             var sourceFlattened = source;
             //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
-*/
-
+#else
             // SOURCE Pink Noise using Voss algorithm
             
             var sourcePoints = new List<Point>();
@@ -48,8 +49,7 @@ namespace PolyLineAnimation
             var source = Morph.CreatePathGeometry(sourcePoints);
             var sourceFlattened = source;
             //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
-            
-            
+#endif
 
             // TARGET
             
