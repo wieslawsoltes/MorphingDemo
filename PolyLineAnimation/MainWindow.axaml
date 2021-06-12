@@ -15,7 +15,7 @@
             Width="12.56"
             Height="3"
             Stroke="Black" 
-            StrokeThickness="0.02" 
+            StrokeThickness="0.01" 
             Fill="Transparent"
             ClipToBounds="False"/>
     </Viewbox>
