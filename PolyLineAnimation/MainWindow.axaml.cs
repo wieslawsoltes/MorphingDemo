@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
@@ -18,7 +19,7 @@ namespace PolyLineAnimation
             this.AttachDevTools();
 #endif
             // SOURCE
-
+/*
             var sourcePoints = new List<Point>();
             for (double x = 0; x <= Math.PI * 4; x += 0.01)
             {
@@ -28,6 +29,27 @@ namespace PolyLineAnimation
             var source = Morph.CreatePathGeometry(sourcePoints);
             var sourceFlattened = source;
             //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+*/
+
+            // SOURCE Pink Noise using Voss algorithm
+            
+            var sourcePoints = new List<Point>();
+            var pn = new PinkNumber();
+            for (double x = 0; x <= Math.PI * 4; x += 0.01)
+            {
+                var next = pn.GetNextValue();
+                var point = new Point(x, next);
+                sourcePoints.Add(point);
+            }
+
+            var max = sourcePoints.Max(p => p.Y);
+            sourcePoints = sourcePoints.Select(p => new Point(p.X, p.Y / max + 1)).ToList();
+
+            var source = Morph.CreatePathGeometry(sourcePoints);
+            var sourceFlattened = source;
+            //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
+            
+            
 
             // TARGET
             
@@ -37,6 +59,7 @@ namespace PolyLineAnimation
                 var point = new Point(x, Math.Cos(x) + 1);
                 targetPoints.Add(point);
             }
+            
             var target = Morph.CreatePathGeometry(targetPoints);
             var targetFlattened = target;
             //var targetFlattened = target.Flatten(FlattenOutput.PolyLines);     
