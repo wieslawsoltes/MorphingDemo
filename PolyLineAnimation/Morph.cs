@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 
@@ -9,6 +10,11 @@ namespace PolyLineAnimation
 {
     public static class Morph
     {
+        static Morph()
+        {
+            Animation.RegisterAnimator<GeometryAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
+        }
+
         public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed, IEasing easing)
         {
             int steps = (int) (1 / speed);
