@@ -43,7 +43,7 @@ namespace PolyLineAnimation
 
             // CACHE
             
-            var easing = new BounceEaseOut(); // ExponentialEaseOut, BounceEaseOut, ElasticEaseOut
+            var easing = new ElasticEaseOut(); // ExponentialEaseOut, BounceEaseOut, ElasticEaseOut
             var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
 
             // UI
@@ -82,6 +82,7 @@ namespace PolyLineAnimation
                 }
             };
             timer.Start();
+            //slider.IsVisible = true;
         }
 
         private void InitializeComponent()
