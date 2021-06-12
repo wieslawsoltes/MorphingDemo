@@ -104,8 +104,11 @@ namespace PolyLineAnimation
                     slider.Value = slider.Minimum;
                 }
             };
+#if true
             timer.Start();
-            //slider.IsVisible = true;
+#else
+            slider.IsVisible = true;
+#endif
         }
 
         private void InitializeComponent()
