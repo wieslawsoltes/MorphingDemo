@@ -15,7 +15,7 @@
       <Path Name="path" 
             Width="12.56"
             Height="3"
-            StrokeThickness="0.02" 
+            StrokeThickness="0.01" 
             ClipToBounds="False">
         <Path.Fill>
           <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%" Opacity="0.2">
