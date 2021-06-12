@@ -9,12 +9,24 @@
   <Window.Styles>
     <Style Selector="Path.animation">
       <Style.Animations>
-        <Animation Duration="0:0:3" IterationCount="INFINITE" Easing="SplineEasing">
+        <Animation Duration="0:0:5" IterationCount="INFINITE" Easing="SplineEasing">
           <KeyFrame Cue="0%">
             <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
             <Setter Property="StrokeThickness" Value="0.01"/>
           </KeyFrame>
-          <KeyFrame Cue="50%">
+          <KeyFrame Cue="20%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+            <Setter Property="StrokeThickness" Value="0.005"/>
+          </KeyFrame>
+          <KeyFrame Cue="30%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="60%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometrySine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="80%">
             <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
             <Setter Property="StrokeThickness" Value="0.005"/>
           </KeyFrame>
