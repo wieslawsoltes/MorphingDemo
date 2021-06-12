@@ -26,7 +26,8 @@ namespace PolyLineAnimation
                 sourcePoints.Add(point);
             }
             var source = Morph.CreatePathGeometry(sourcePoints);
-            //source = source.Flatten(FlattenOutput.PolyLines);
+            var sourceFlattened = source;
+            //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
 
             // TARGET
             
@@ -37,12 +38,13 @@ namespace PolyLineAnimation
                 targetPoints.Add(point);
             }
             var target = Morph.CreatePathGeometry(targetPoints);
-            //target = target.Flatten(FlattenOutput.PolyLines);     
+            var targetFlattened = target;
+            //var targetFlattened = target.Flatten(FlattenOutput.PolyLines);     
 
             // CACHE
- 
-            var easing = new ExponentialEaseOut();
-            var cache = Morph.ToCache(source, target, 0.01, easing);
+            
+            var easing = new BounceEaseOut(); // ExponentialEaseOut, BounceEaseOut
+            var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
 
             // UI
 
