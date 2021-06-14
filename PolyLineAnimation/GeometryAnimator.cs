@@ -13,7 +13,8 @@ namespace PolyLineAnimation
         {
             var clone = (oldValue as PathGeometry).ClonePathGeometry();
 
-            Morph.To(clone, newValue as PathGeometry, progress);
+            //Morph.To(clone, newValue as PathGeometry, progress);
+            WPFAnimations.Morph.To(clone, newValue as PathGeometry, progress);
 
             return clone;
         }
