@@ -1,8 +1,10 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using WPFAnimations;
 
 namespace MorphingDemo
@@ -51,6 +53,25 @@ namespace MorphingDemo
             //path.Data = sourceFlattened;
             //path.Data = target;
             //path.Data = targetFlattened;
+            
+            var timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1 / 60.0);
+            timer.Tick += (sender, e) =>
+            {
+                if (slider.Value < slider.Maximum)
+                {
+                    slider.Value++;
+                }
+                else
+                {
+                    slider.Value = slider.Minimum;
+                }
+            };
+#if true
+            timer.Start();
+#else
+            slider.IsVisible = true;
+#endif
         }
 
         private void InitializeComponent()
