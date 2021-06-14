@@ -109,6 +109,9 @@ namespace WPFAnimations
             double p = speed;
             var cache = new List<PathGeometry>(steps);
 
+            // TODO: wasn't present in original
+            cache.Add(source.ClonePathGeometry());
+            
             for (int i = 0; i < steps; i++)
             {
                 var clone = source.ClonePathGeometry();
@@ -120,6 +123,9 @@ namespace WPFAnimations
 
                 cache.Add(clone);
             }
+
+            // TODO: wasn't present in original
+            cache.Add(target.ClonePathGeometry());
 
             return cache;
         }
