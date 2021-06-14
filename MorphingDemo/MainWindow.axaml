@@ -8,7 +8,12 @@
     <DockPanel>
         <Slider Name="slider" DockPanel.Dock="Bottom"/>
         <Viewbox Stretch="Uniform">
-            <Path Name="path" Stroke="Black" StrokeThickness="0" Fill="Red" Height="20"/>
+            <Path Name="path" 
+                  Stroke="Black" 
+                  StrokeThickness="0" 
+                  Fill="Red" 
+                  Width="20"
+                  Height="20"/>
             <!-- <Path Name="path" Stroke="Black" StrokeThickness="1" Fill="Transparent"/> -->
         </Viewbox>
     </DockPanel>
