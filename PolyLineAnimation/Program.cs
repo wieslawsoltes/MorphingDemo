@@ -1,7 +1,10 @@
 ﻿using System;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media;
+using WPFAnimations;
 
 namespace PolyLineAnimation
 {
@@ -15,8 +18,12 @@ namespace PolyLineAnimation
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+        {
+            Animation.RegisterAnimator<GeometryAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
+
+            return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace();
+        }
     }
 }

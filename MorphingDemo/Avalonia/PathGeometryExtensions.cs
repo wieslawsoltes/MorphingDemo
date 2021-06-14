@@ -1,6 +1,6 @@
 ﻿using System;
-using Avalonia;
-using Avalonia.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Media;
 
 namespace Avalonia
@@ -202,6 +202,27 @@ namespace Avalonia
             }
 
             return pathOut;
+        }
+
+        public static PathGeometry ToFlattenedPathGeometry(this IList<Point> sourcePoints)
+        {
+            var source = new PathGeometry
+            {
+                FillRule = FillRule.EvenOdd
+            };
+
+            var sourceFigure = new PathFigure()
+            {
+                IsClosed = false,
+                IsFilled = false,
+                StartPoint = sourcePoints.First()
+            };
+            source.Figures.Add(sourceFigure);
+
+            var polylineSegment = new PolyLineSegment(sourcePoints.Skip(1));
+            sourceFigure.Segments?.Add(polylineSegment);
+
+            return source;
         }
 
         public static PathGeometry ClonePathGeometry(this PathGeometry pathIn)

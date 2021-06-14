@@ -51,7 +51,7 @@ namespace PolyLineAnimation
             // CACHE
 
             var easing = new ElasticEaseOut(); // ExponentialEaseOut, BounceEaseOut, ElasticEaseOut
-            //var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
+            //var cache = PolyLineMorph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
             var cache = WPFAnimations.Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
 
             // UI
@@ -105,7 +105,7 @@ namespace PolyLineAnimation
                 targetPoints.Add(point);
             }
 
-            var target = Morph.CreatePathGeometry(targetPoints);
+            var target = targetPoints.ToFlattenedPathGeometry();
             var targetFlattened = target;
             //var targetFlattened = target.Flatten(FlattenOutput.PolyLines);  
 
@@ -121,7 +121,7 @@ namespace PolyLineAnimation
                 sourcePoints.Add(point);
             }
 
-            var source = Morph.CreatePathGeometry(sourcePoints);
+            var source = sourcePoints.ToFlattenedPathGeometry();
             var sourceFlattened = source;
             //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
 
@@ -142,7 +142,7 @@ namespace PolyLineAnimation
             var max = sourcePoints.Max(p => p.Y);
             sourcePoints = sourcePoints.Select(p => new Point(p.X, p.Y / max)).ToList();
 
-            var source = Morph.CreatePathGeometry(sourcePoints);
+            var source = sourcePoints.ToFlattenedPathGeometry();
             var sourceFlattened = source;
             //var sourceFlattened = source.Flatten(FlattenOutput.PolyLines);
 

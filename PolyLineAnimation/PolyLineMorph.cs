@@ -1,20 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 
 namespace PolyLineAnimation
 {
-    public static class Morph
+    public static class PolyLineMorph
     {
-        static Morph()
-        {
-            Animation.RegisterAnimator<GeometryAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
-        }
-
         public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed, IEasing easing)
         {
             int steps = (int) (1 / speed);
@@ -70,25 +63,5 @@ namespace PolyLineAnimation
             return new Point(x, y);
         }
 
-        public static PathGeometry CreatePathGeometry(IList<Point> sourcePoints)
-        {
-            var source = new PathGeometry
-            {
-                FillRule = FillRule.EvenOdd
-            };
-
-            var sourceFigure = new PathFigure()
-            {
-                IsClosed = false,
-                IsFilled = false,
-                StartPoint = sourcePoints.First()
-            };
-            source.Figures.Add(sourceFigure);
-
-            var polylineSegment = new PolyLineSegment(sourcePoints.Skip(1));
-            sourceFigure.Segments?.Add(polylineSegment);
-
-            return source;
-        }
     }
 }

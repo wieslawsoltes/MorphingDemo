@@ -1,11 +1,8 @@
-﻿using System;
-using Avalonia;
-using Avalonia.Animation;
-using Avalonia.Animation.Animators;
-using Avalonia.Data;
+﻿using Avalonia.Animation.Animators;
 using Avalonia.Media;
+using WPFAnimations;
 
-namespace PolyLineAnimation
+namespace Avalonia
 {
     public class GeometryAnimator : Animator<Geometry>
     {
@@ -13,8 +10,7 @@ namespace PolyLineAnimation
         {
             var clone = (oldValue as PathGeometry).ClonePathGeometry();
 
-            //Morph.To(clone, newValue as PathGeometry, progress);
-            WPFAnimations.Morph.To(clone, newValue as PathGeometry, progress);
+            Morph.To(clone, newValue as PathGeometry, progress);
 
             return clone;
         }

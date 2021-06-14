@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 
@@ -9,6 +10,11 @@ namespace WPFAnimations
 {
     public static class Morph
     {
+        //static Morph()
+        //{
+        //    Animation.RegisterAnimator<GeometryAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
+        //}
+
         public static bool Collapse(PathGeometry sourceGeometry, double progress)
         {
             int count = sourceGeometry.Figures.Count;
