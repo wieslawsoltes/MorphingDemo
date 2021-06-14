@@ -6,15 +6,31 @@
         x:Class="MorphingDemo.MainWindow"
         Title="MorphingDemo">
     <DockPanel>
-        <Slider Name="slider" DockPanel.Dock="Bottom"/>
+        <Slider Name="slider" 
+                IsVisible="False"
+                DockPanel.Dock="Bottom"/>
         <Viewbox Stretch="Uniform">
             <Path Name="path" 
-                  Stroke="Black" 
-                  StrokeThickness="0" 
-                  Fill="Red" 
+                  StrokeThickness="0.05" 
                   Width="20"
-                  Height="20"/>
-            <!-- <Path Name="path" Stroke="Black" StrokeThickness="1" Fill="Transparent"/> -->
+                  Height="20">
+                <Path.Fill>
+                    <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%" Opacity="0.2">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0.0" Color="#FF72BD81" />
+                            <GradientStop Offset="1.0" Color="#0072BD81" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.Stroke>
+                    <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0.0" Color="#72BD81" />
+                            <GradientStop Offset="1.0" Color="#72BD81" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Path.Stroke>
+            </Path>
         </Viewbox>
     </DockPanel>
 </Window>
