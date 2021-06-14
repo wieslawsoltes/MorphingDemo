@@ -104,7 +104,7 @@ namespace WPFAnimations
 
         public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed)
         {
-            var easing = new ExponentialEaseOut();
+            var easing = new ExponentialEaseInOut();
             int steps = (int)(1 / speed);
             double p = speed;
             var cache = new List<PathGeometry>(steps);
