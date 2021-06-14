@@ -51,7 +51,8 @@ namespace PolyLineAnimation
             // CACHE
 
             var easing = new ElasticEaseOut(); // ExponentialEaseOut, BounceEaseOut, ElasticEaseOut
-            var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
+            //var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
+            var cache = WPFAnimations.Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
 
             // UI
 

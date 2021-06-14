@@ -16,5 +16,8 @@
       <Compile Include="..\MorphingDemo\Avalonia\PolyLineSegment.cs">
         <Link>Avalonia\PolyLineSegment.cs</Link>
       </Compile>
+      <Compile Include="..\MorphingDemo\WPFAnimations\Morph.cs">
+        <Link>Morph.cs</Link>
+      </Compile>
     </ItemGroup>
 </Project>
