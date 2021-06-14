@@ -5,12 +5,6 @@ using Avalonia.Media;
 
 namespace Avalonia
 {
-    public enum FlattenOutput
-    {
-        Lines,
-        PolyLines
-    }
-
     public static class PathGeometryExtensions
     {
         private static Point[] Interpolate(Point pt0, Point pt1)
@@ -91,7 +85,7 @@ namespace Avalonia
             return Math.Sqrt(Math.Pow(pt1.X - pt0.X, 2) + Math.Pow(pt1.Y - pt0.Y, 2));
         }
 
-        public static PathGeometry Flatten(this PathGeometry pathIn, FlattenOutput flattenOutput)
+        public static PathGeometry GetFlattenedPathGeometry(this PathGeometry pathIn)
         {
             var pathOut = new PathGeometry()
             {
@@ -117,6 +111,8 @@ namespace Avalonia
                     continue;
                 }
 
+                var polyLineSegmentOut = new PolyLineSegment();
+
                 foreach (var pathSegmentIn in figureIn.Segments)
                 {
                     switch (pathSegmentIn)
@@ -129,30 +125,10 @@ namespace Avalonia
                         case BezierSegment bezierSegmentIn:
                         {
                             var points = FlattenCubic(lastPoint, bezierSegmentIn.Point1, bezierSegmentIn.Point2, bezierSegmentIn.Point3);
-
-                            switch (flattenOutput)
+                            
+                            for (var i = 0; i < points.Length; i++)
                             {
-                                case FlattenOutput.Lines:
-                                {
-                                    for (var i = 0; i < points.Length; i++)
-                                    {
-                                        var lineSegmentOut = new LineSegment {Point = points[i]};
-                                        figureOut.Segments?.Add(lineSegmentOut);
-                                    }
-                                }
-                                    break;
-                                case FlattenOutput.PolyLines:
-                                {
-                                    var polyLineSegmentOut = new PolyLineSegment();
-
-                                    for (var i = 0; i < points.Length; i++)
-                                    {
-                                        polyLineSegmentOut.Points?.Add(points[i]);
-                                    }
-
-                                    figureOut.Segments?.Add(polyLineSegmentOut);
-                                }
-                                    break;
+                                polyLineSegmentOut.Points?.Add(points[i]);
                             }
 
                             lastPoint = bezierSegmentIn.Point3;
@@ -162,29 +138,9 @@ namespace Avalonia
                         {
                             var points = Interpolate(lastPoint, lineSegmentIn.Point);
 
-                            switch (flattenOutput)
+                            for (var i = 0; i < points.Length; i++)
                             {
-                                case FlattenOutput.Lines:
-                                {
-                                    for (var i = 0; i < points.Length; i++)
-                                    {
-                                        var lineSegmentOut = new LineSegment {Point = points[i]};
-                                        figureOut.Segments?.Add(lineSegmentOut);
-                                    }
-                                }
-                                    break;
-                                case FlattenOutput.PolyLines:
-                                {
-                                    var polyLineSegmentOut = new PolyLineSegment();
-
-                                    for (var i = 0; i < points.Length; i++)
-                                    {
-                                        polyLineSegmentOut.Points?.Add(points[i]);
-                                    }
-
-                                    figureOut.Segments?.Add(polyLineSegmentOut);
-                                }
-                                    break;
+                                polyLineSegmentOut.Points?.Add(points[i]);
                             }
 
                             lastPoint = lineSegmentIn.Point;
@@ -194,29 +150,9 @@ namespace Avalonia
                         {
                             var points = FlattenQuadratic(lastPoint, quadraticBezierSegmentIn.Point1, quadraticBezierSegmentIn.Point2);
 
-                            switch (flattenOutput)
+                            for (var i = 0; i < points.Length; i++)
                             {
-                                case FlattenOutput.Lines:
-                                {
-                                    for (var i = 0; i < points.Length; i++)
-                                    {
-                                        var lineSegmentOut = new LineSegment {Point = points[i]};
-                                        figureOut.Segments?.Add(lineSegmentOut);
-                                    }
-                                }
-                                    break;
-                                case FlattenOutput.PolyLines:
-                                {
-                                    var polyLineSegmentOut = new PolyLineSegment();
-
-                                    for (var i = 0; i < points.Length; i++)
-                                    {
-                                        polyLineSegmentOut.Points?.Add(points[i]);
-                                    }
-
-                                    figureOut.Segments?.Add(polyLineSegmentOut);
-                                }
-                                    break;
+                                polyLineSegmentOut.Points?.Add(points[i]);
                             }
 
                             lastPoint = quadraticBezierSegmentIn.Point2;
@@ -226,41 +162,15 @@ namespace Avalonia
                         {
                             if (polyLineSegmentIn.Points.Count > 0)
                             {
-                                switch (flattenOutput)
+                                for (var i = 0; i < polyLineSegmentIn.Points.Count; i++)
                                 {
-                                    case FlattenOutput.Lines:
+                                    var points = Interpolate(lastPoint, polyLineSegmentIn.Points[i]);
+                                    for (int j = 0; j < points.Length; j++)
                                     {
-                                        for (var i = 0; i < polyLineSegmentIn.Points.Count; i++)
-                                        {
-                                            var points = Interpolate(lastPoint, polyLineSegmentIn.Points[i]);
-                                            for (int j = 0; j < points.Length; j++)
-                                            {
-                                                var lineSegmentOut = new LineSegment {Point = points[j]};
-                                                figureOut.Segments?.Add(lineSegmentOut);
-                                            }
-                                            lastPoint = polyLineSegmentIn.Points[i];
-                                        }
+                                        polyLineSegmentOut.Points?.Add(points[j]);
                                     }
-                                        break;
-                                    case FlattenOutput.PolyLines:
-                                    {
-                                        var polyLineSegmentOut = new PolyLineSegment();
-
-                                        for (var i = 0; i < polyLineSegmentIn.Points.Count; i++)
-                                        {
-                                            var points = Interpolate(lastPoint, polyLineSegmentIn.Points[i]);
-                                            for (int j = 0; j < points.Length; j++)
-                                            {
-                                                polyLineSegmentOut.Points?.Add(points[j]);
-                                            }
-                                            lastPoint = polyLineSegmentIn.Points[i];
-                                        }
-
-                                        figureOut.Segments?.Add(polyLineSegmentOut);
-                                    }
-                                        break;
+                                    lastPoint = polyLineSegmentIn.Points[i];
                                 }
-
                             }
                         }
                             break;
@@ -271,40 +181,24 @@ namespace Avalonia
                             break;
                     }
                 }
-
 #if true
                 if (figureIn.IsClosed)
                 {
                     var points = Interpolate(lastPoint, firstPoint);
 
-                    switch (flattenOutput)
+                    for (var i = 0; i < points.Length; i++)
                     {
-                        case FlattenOutput.Lines:
-                        {
-                            for (var i = 0; i < points.Length; i++)
-                            {
-                                var lineSegmentOut = new LineSegment {Point = points[i]};
-                                figureOut.Segments?.Add(lineSegmentOut);
-                            }
-                        }
-                            break;
-                        case FlattenOutput.PolyLines:
-                        {
-                            var polyLineSegmentOut = new PolyLineSegment();
-
-                            for (var i = 0; i < points.Length; i++)
-                            {
-                                polyLineSegmentOut.Points?.Add(points[i]);
-                            }
-
-                            figureOut.Segments?.Add(polyLineSegmentOut);
-                        }
-                            break;
+                        polyLineSegmentOut.Points?.Add(points[i]);
                     }
 
                     firstPoint = lastPoint = new Point(0, 0);
                 }
 #endif
+
+                if (polyLineSegmentOut.Points?.Count > 0)
+                {
+                    figureOut.Segments?.Add(polyLineSegmentOut);
+                }
             }
 
             return pathOut;
