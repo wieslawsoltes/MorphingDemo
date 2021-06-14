@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
@@ -26,7 +27,8 @@ namespace MorphingDemo
             //var target = PathGeometry.Parse("M0 0C0 30 45 30 45 0");
             var targetFlattened = target.GetFlattenedPathGeometry();
 
-            var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01);
+            var easing = new ExponentialEaseOut();
+            var cache = Morph.ToCache(sourceFlattened, targetFlattened, 0.01, easing);
 
             var path = this.FindControl<Path>("path");
             var slider = this.FindControl<Slider>("slider");
