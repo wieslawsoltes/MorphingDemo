@@ -10,11 +10,6 @@ namespace WPFAnimations
 {
     public static class Morph
     {
-        //static Morph()
-        //{
-        //    Animation.RegisterAnimator<MorphAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
-        //}
-
         public static bool Collapse(PathGeometry sourceGeometry, double progress)
         {
             int count = sourceGeometry.Figures.Count;
