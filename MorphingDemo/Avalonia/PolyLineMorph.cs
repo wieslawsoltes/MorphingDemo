@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 
-namespace PolyLineAnimation
+namespace Avalonia
 {
     public static class PolyLineMorph
     {

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace PolyLineAnimation
+namespace Avalonia
 {
     public class PinkNumber
     {

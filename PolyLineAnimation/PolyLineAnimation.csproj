@@ -16,6 +16,15 @@
       <Compile Include="..\MorphingDemo\Avalonia\PathGeometryExtensions.cs">
         <Link>Avalonia\PathGeometryExtensions.cs</Link>
       </Compile>
+      <Compile Include="..\MorphingDemo\Avalonia\PinkNumber.cs">
+        <Link>Avalonia\PinkNumber.cs</Link>
+      </Compile>
+      <Compile Include="..\MorphingDemo\Avalonia\PolyLineAnimator.cs">
+        <Link>Avalonia\PolyLineAnimator.cs</Link>
+      </Compile>
+      <Compile Include="..\MorphingDemo\Avalonia\PolyLineMorph.cs">
+        <Link>Avalonia\PolyLineMorph.cs</Link>
+      </Compile>
       <Compile Include="..\MorphingDemo\Avalonia\PolyLineSegment.cs">
         <Link>Avalonia\PolyLineSegment.cs</Link>
       </Compile>
