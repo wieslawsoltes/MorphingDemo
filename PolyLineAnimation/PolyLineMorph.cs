@@ -41,8 +41,23 @@ namespace PolyLineAnimation
             var targetFigure = target.Figures[0];
             var targetSegment = targetFigure.Segments[0] as PolyLineSegment;
 
-            Debug.Assert(sourceSegment.Points.Count == targetSegment.Points.Count);
-
+            if (sourceSegment.Points.Count < targetSegment.Points.Count)
+            {
+                var toAdd = targetSegment.Points.Count - sourceSegment.Points.Count;
+                for (int i = 0; i < toAdd; i++)
+                {
+                    sourceSegment.Points.Add(sourceFigure.StartPoint);
+                }
+            }
+            else if (sourceSegment.Points.Count > targetSegment.Points.Count)
+            {
+                var toAdd = sourceSegment.Points.Count - targetSegment.Points.Count;
+                for (int i = 0; i < toAdd; i++)
+                {
+                    targetSegment.Points.Add(targetFigure.StartPoint);
+                }
+            }
+            
             sourceFigure.StartPoint = Interpolate(sourceFigure.StartPoint, targetFigure.StartPoint, progress);
 
             for (int j = 0; j < sourceSegment.Points.Count; j++)
