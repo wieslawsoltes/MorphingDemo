@@ -7,7 +7,7 @@
         x:Class="PolyLineAnimation.MainWindow"
         Title="PolyLineAnimation">
   <Window.Styles>
-    <Style Selector="Path.animation">
+    <Style Selector="Path.ComplexAnimation">
       <Style.Animations>
         <Animation Duration="0:0:5" IterationCount="INFINITE" Easing="SplineEasing">
           <KeyFrame Cue="0%">
@@ -37,6 +37,90 @@
         </Animation>
       </Style.Animations>
     </Style>
+    <Style Selector="Path.SinCosAnimation">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE" Easing="SplineEasing">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometrySine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Path.CosSinAnimation">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE" Easing="SplineEasing">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometrySine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Path.SinPinkNoiseAnimation">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE" Easing="SplineEasing">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometrySine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Path.PinkNoiseSinAnimation">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE" Easing="SplineEasing">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometrySine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Path.CosPinkNoiseAnimation">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE" Easing="SplineEasing">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="Path.PinkNoiseCosAnimation">
+      <Style.Animations>
+        <Animation Duration="0:0:1" IterationCount="INFINITE" Easing="SplineEasing">
+          <KeyFrame Cue="0%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryPinkNoise}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Data" Value="{x:Static local:MainWindow.PathGeometryCosine}"/>
+            <Setter Property="StrokeThickness" Value="0.01"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
   </Window.Styles>
   <DockPanel>
     <Slider Name="slider"
@@ -46,7 +130,7 @@
              Margin="0,6,0,6"
              ClipToBounds="False">
       <Path Name="path"
-            Classes="animation"
+            Classes="ComplexAnimation"
             Height="3"
             ClipToBounds="False">
         <Path.Fill>
