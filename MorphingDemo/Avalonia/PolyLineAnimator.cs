@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Animation.Animators;
 using Avalonia.Media;
-using WPFAnimations;
 
 namespace PolyLineAnimation
 {
