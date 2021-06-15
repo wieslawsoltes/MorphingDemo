@@ -19,7 +19,8 @@ namespace PolyLineAnimation
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
         {
-            Animation.RegisterAnimator<GeometryAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
+            //Animation.RegisterAnimator<GeometryAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
+            Animation.RegisterAnimator<PolyLineAnimator>(prop => typeof(Geometry).IsAssignableFrom(prop.PropertyType));
 
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
