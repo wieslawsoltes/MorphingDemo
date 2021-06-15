@@ -10,8 +10,8 @@
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.6" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="..\MorphingDemo\Avalonia\GeometryAnimator.cs">
-            <Link>Avalonia\GeometryAnimator.cs</Link>
+        <Compile Include="..\MorphingDemo\Avalonia\MorphAnimator.cs">
+            <Link>Avalonia\MorphAnimator.cs</Link>
         </Compile>
       <Compile Include="..\MorphingDemo\Avalonia\PathGeometryExtensions.cs">
         <Link>Avalonia\PathGeometryExtensions.cs</Link>

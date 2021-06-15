@@ -4,7 +4,7 @@ using WPFAnimations;
 
 namespace Avalonia
 {
-    public class GeometryAnimator : Animator<Geometry>
+    public class MorphAnimator : Animator<Geometry>
     {
         public override Geometry Interpolate(double progress, Geometry oldValue, Geometry newValue)
         {
