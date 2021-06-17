@@ -2,8 +2,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
         x:Class="MorphingDemo.MainWindow"
         Title="MorphingDemo">
-    Welcome to Avalonia!
+    <DockPanel>
+        <Slider Name="slider" 
+                IsVisible="False"
+                DockPanel.Dock="Bottom"/>
+        <Viewbox Stretch="Uniform">
+            <Path Name="path" 
+                  StrokeThickness="0.05" 
+                  Width="20"
+                  Height="20">
+                <Path.Fill>
+                    <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%" Opacity="0.2">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0.0" Color="#FF72BD81" />
+                            <GradientStop Offset="1.0" Color="#0072BD81" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.Stroke>
+                    <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0.0" Color="#72BD81" />
+                            <GradientStop Offset="1.0" Color="#72BD81" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Path.Stroke>
+            </Path>
+        </Viewbox>
+    </DockPanel>
 </Window>

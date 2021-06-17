@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Threading;
-using WPFAnimations.Visuals.Animation;
+#if false
+using Avalonia.Media;
+using Avalonia.Threading;
 
 namespace WPFAnimations.Visuals
 {
@@ -34,7 +29,7 @@ namespace WPFAnimations.Visuals
             double top = Y;
             double left = X;
 
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 var scaleAnim = AnimationHelper.GetDoubleAnimation(scale, speed, delay);
                 var animY = AnimationHelper.GetDoubleAnimation(y - (top * scaleTranslate), speed, delay);
@@ -56,3 +51,4 @@ namespace WPFAnimations.Visuals
         }
     }
 }
+#endif

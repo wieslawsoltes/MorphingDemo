@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
+using Avalonia.Media;
 
 namespace WPFAnimations
 {
@@ -26,7 +25,7 @@ namespace WPFAnimations
 
         private static void MoveFigure(PathFigure source, double p, double progress)
         {
-            PolyLineSegment segment = (PolyLineSegment)source.Segments[0];
+            var segment = (PolyLineSegment)source.Segments[0];
 
             for (int i = 0; i < segment.Points.Count; i++)
             {
@@ -41,14 +40,18 @@ namespace WPFAnimations
 
             source.StartPoint = new Point(newX, source.StartPoint.Y);
         }
-
-        private static bool DoFiguresOverlap(PathFigureCollection figures, int index0, int index1, int index2)
+/* TODO:
+        private static bool DoFiguresOverlap(PathFigures figures, int index0, int index1, int index2)
         {
             if (index2 < figures.Count && index0 >= 0)
             {
-                PathGeometry g0 = new PathGeometry(new[] { figures[index2] });
-                PathGeometry g1 = new PathGeometry(new[] { figures[index1] });
-                PathGeometry g2 = new PathGeometry(new[] { figures[index0] });
+                var g0 = new PathGeometry();
+                g0.Figures.Add(figures[index2]);
+                var g1 = new PathGeometry();
+                g1.Figures.Add(figures[index1]);
+                var g2 = new PathGeometry();
+                g2.Figures.Add(figures[index0]);
+                // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.geometry.fillcontainswithdetail?view=net-5.0
                 var result0 = g0.FillContainsWithDetail(g1);
                 var result1 = g0.FillContainsWithDetail(g2);
 
@@ -62,22 +65,25 @@ namespace WPFAnimations
             return false;
         }
 
-        private static bool DoFiguresOverlap(PathFigureCollection figures, int index0, int index1)
+        private static bool DoFiguresOverlap(PathFigures figures, int index0, int index1)
         {
             if (index1 < figures.Count && index0 >= 0)
             {
-                PathGeometry g1 = new PathGeometry(new[] { figures[index1] });
-                PathGeometry g2 = new PathGeometry(new[] { figures[index0] });
+                var g1 = new PathGeometry();
+                g1.Figures.Add(figures[index1]);
+                var g2 = new PathGeometry();
+                g2.Figures.Add(figures[index0]);
+                // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.geometry.fillcontainswithdetail?view=net-5.0
                 var result = g1.FillContainsWithDetail(g2);
                 return result == IntersectionDetail.FullyContains || result == IntersectionDetail.FullyInside;
             }
             return false;
         }
-
+*/
         private static void CollapseFigure(PathFigure figure)
         {
             var points = ((PolyLineSegment)figure.Segments[0]).Points;
-            var centroid = GetCentroid(points, points.Count);
+            var centroid = GetCentroid(points);
 
             for (int p = 0; p < points.Count; p++)
             {
@@ -97,17 +103,19 @@ namespace WPFAnimations
             }
         }
 
-        public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed)
+        public static List<PathGeometry> ToCache(PathGeometry source, PathGeometry target, double speed, IEasing easing)
         {
-            PowerEase powerEase = new PowerEase();
             int steps = (int)(1 / speed);
             double p = speed;
-            List<PathGeometry> cache = new List<PathGeometry>(steps);
+            var cache = new List<PathGeometry>(steps);
 
+            // TODO: wasn't present in original
+            cache.Add(source.ClonePathGeometry());
+            
             for (int i = 0; i < steps; i++)
             {
-                var clone = source.Clone();
-                var easeP = powerEase.Ease(p);
+                var clone = source.ClonePathGeometry();
+                var easeP = easing.Ease(p);
 
                 To(clone, target, easeP);
 
@@ -115,6 +123,9 @@ namespace WPFAnimations
 
                 cache.Add(clone);
             }
+
+            // TODO: wasn't present in original
+            cache.Add(target.ClonePathGeometry());
 
             return cache;
         }
@@ -130,7 +141,7 @@ namespace WPFAnimations
                 var toAdd = target.Figures.Count - source.Figures.Count;
                 for (int i = 0; i < toAdd; i++)
                 {
-                    var clone = last.Clone();
+                    var clone = last.ClonePathFigure();
                     source.Figures.Add(clone);
                 }
             }
@@ -149,7 +160,7 @@ namespace WPFAnimations
 
                 for (int i = 0; i < toAdd; i++)
                 {
-                    var clone = target.Figures[lastIndex].Clone();
+                    var clone = target.Figures[lastIndex].ClonePathFigure();
                     //var clone = target.Figures[(lastIndex - (i % (lastIndex + 1)))].Clone();
 
                     //
@@ -159,21 +170,23 @@ namespace WPFAnimations
                     //
                     if (lastIndex > 0)
                     {
+                        /* TODO:
                         if (DoFiguresOverlap(target.Figures, lastIndex - 1, lastIndex))
                         {
                             if (DoFiguresOverlap(target.Figures, lastIndex - 2, lastIndex - 1, lastIndex))
                             {
-                                clone = target.Figures[lastIndex - 3].Clone();
+                                clone = target.Figures[lastIndex - 3].ClonePathFigure();
                             }
                             else if (lastIndex - 2 > 0)
                             {
-                                clone = target.Figures[lastIndex - 2].Clone();
+                                clone = target.Figures[lastIndex - 2].ClonePathFigure();
                             }
                             else
                             {
                                 CollapseFigure(clone);
                             }
                         }
+                        //*/
                     }
                     else
                     {
@@ -201,7 +214,7 @@ namespace WPFAnimations
                     if (map.Contains(j))
                         continue;
                    
-                    var len = Point.Subtract(source.Figures[i].StartPoint, target.Figures[j].StartPoint).LengthSquared;
+                    var len = LengthSquared(source.Figures[i].StartPoint - target.Figures[j].StartPoint);
                     if (len < closest)
                     {
                         closest = len;
@@ -216,10 +229,15 @@ namespace WPFAnimations
                 MorphFigure(source.Figures[i], target.Figures[map[i]], progress);
         }
 
+        private static double LengthSquared(Point point)
+        {
+            return point.X * point.X + point.Y*point.Y;
+        }
+        
         public static void MorphFigure(PathFigure source, PathFigure target, double progress)
         {
-            PolyLineSegment sourceSegment = (PolyLineSegment)source.Segments[0];
-            PolyLineSegment targetSegment = (PolyLineSegment)target.Segments[0];
+            var sourceSegment = (PolyLineSegment)source.Segments[0];
+            var targetSegment = (PolyLineSegment)target.Segments[0];
 
             if (sourceSegment.Points.Count < targetSegment.Points.Count)
             {
@@ -287,12 +305,12 @@ namespace WPFAnimations
 
         public static int MorphCollapse(PathFigure source, double progress)
         {
-            PolyLineSegment sourceSegment = (PolyLineSegment)source.Segments[0];
+            var sourceSegment = (PolyLineSegment)source.Segments[0];
 
             //
             // Find Centroid
             //
-            var centroid = GetCentroid(sourceSegment.Points, sourceSegment.Points.Count);
+            var centroid = GetCentroid(sourceSegment.Points);
             for (int i = 0; i < sourceSegment.Points.Count; i++)
             {
                 var fromX = sourceSegment.Points[i].X;
@@ -320,12 +338,12 @@ namespace WPFAnimations
             return 0;
         }
 
-        public static Point GetCentroid(PointCollection nodes, int count)
+        public static Point GetCentroid(IList<Point> nodes)
         {
             double x = 0, y = 0, area = 0, k;
-            Point a, b = nodes[count - 1];
+            Point a, b = nodes[nodes.Count - 1];
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < nodes.Count; i++)
             {
                 a = nodes[i];
 

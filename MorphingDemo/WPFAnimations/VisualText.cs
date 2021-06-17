@@ -1,17 +1,13 @@
+#if false
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using WPFAnimations.Visuals.Animation;
+using Avalonia;
+using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Media;
+using Avalonia.Threading;
 
 namespace WPFAnimations.Visuals
 {
@@ -29,7 +25,7 @@ namespace WPFAnimations.Visuals
         public GradientStop EndColor { get; set; }
         public Color PrimaryColor { get; set; }
 
-        public DoubleCollection StrokeArray { get; set; }
+        public new AvaloniaList<double> StrokeArray { get; set; }
         public double StrokeDashOffset { get; set; }
 
         public double FontSize { get; set; }
@@ -54,15 +50,15 @@ namespace WPFAnimations.Visuals
             FontSize = fontSize;
             FontName = font;
 
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 var stopStart = new GradientStop() { Color = color, Offset = -1 };
                 var stopEnd = new GradientStop() { Color = Colors.Transparent, Offset = -1 };
 
-                LinearGradientBrush linearGradientBrush = new LinearGradientBrush();
-                linearGradientBrush.StartPoint = new Point(0, 0);
-                linearGradientBrush.EndPoint = new Point(1, 0);
-                linearGradientBrush.GradientStops = new GradientStopCollection();
+                var linearGradientBrush = new LinearGradientBrush();
+                linearGradientBrush.StartPoint = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+                linearGradientBrush.EndPoint = new RelativePoint(new Point(1, 0), RelativeUnit.Relative);
+                linearGradientBrush.GradientStops = new GradientStops();
                 linearGradientBrush.GradientStops.Add(stopStart);
                 linearGradientBrush.GradientStops.Add(stopEnd);
 
@@ -96,7 +92,7 @@ namespace WPFAnimations.Visuals
 
         public void Remove()
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 canvas.Children.Remove(Block);
             });
@@ -104,10 +100,9 @@ namespace WPFAnimations.Visuals
 
         public void Optimize()
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 Block.Foreground = new SolidColorBrush(PrimaryColor);
-                Block.Foreground.Freeze();
 
                 IsOptimized = true;
             });
@@ -115,7 +110,7 @@ namespace WPFAnimations.Visuals
 
         public void UnOptimize()
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 Block.Foreground = Fill;
                 IsOptimized = false;
@@ -132,11 +127,9 @@ namespace WPFAnimations.Visuals
             HideFill(speed * 2, delay + (speed / 4));
         }
 
-        public void Freeze() { }
-
         public void HideOpacity(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 this.Block.BeginAnimation(TextBlock.OpacityProperty,
                     AnimationHelper.GetDoubleAnimation(0, speed, delay));
@@ -145,7 +138,7 @@ namespace WPFAnimations.Visuals
 
         public void ShowOpacity(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 this.Block.BeginAnimation(TextBlock.OpacityProperty,
                     AnimationHelper.GetDoubleAnimation(1, speed, delay));
@@ -154,7 +147,7 @@ namespace WPFAnimations.Visuals
 
         public void ShowFill(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 if (IsOptimized)
                     UnOptimize();
@@ -168,7 +161,7 @@ namespace WPFAnimations.Visuals
 
         public void HideFill(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 if (IsOptimized)
                     UnOptimize();
@@ -196,7 +189,7 @@ namespace WPFAnimations.Visuals
         public GradientStop EndColor { get; set; }
         public Color PrimaryColor { get; set; }
 
-        public DoubleCollection StrokeArray { get; set; }
+        public new AvaloniaList<double> StrokeArray { get; set; }
         public double StrokeDashOffset { get; set; }
 
         public double FontSize { get; set; }
@@ -227,14 +220,23 @@ namespace WPFAnimations.Visuals
             string font = "Nexa Bold",
             double fontSize = 88)
         {
-            var culture = CultureInfo.InvariantCulture;
-            var flow = FlowDirection.LeftToRight;
+            // TODO: var culture = CultureInfo.InvariantCulture;
+            // TODO: var flow = FlowDirection.LeftToRight;
             var fontFamily = new FontFamily(font);
-            var typeface = new Typeface(fontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-            var formattedText = new FormattedText(text, culture, flow, typeface, fontSize, Brushes.White, 100);
+            var typeface = new Typeface(fontFamily, FontStyle.Normal, FontWeight.Normal);
+            // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.formattedtext.-ctor?view=net-5.0#System_Windows_Media_FormattedText__ctor_System_String_System_Globalization_CultureInfo_System_Windows_FlowDirection_System_Windows_Media_Typeface_System_Double_System_Windows_Media_Brush_System_Double_
+            // TODO: var formattedText = new FormattedText(text, culture, flow, typeface, fontSize, Brushes.White, 100);
+            var formattedText = new FormattedText()
+            {
+                Text = text,
+                Typeface = typeface,
+                FontSize = fontSize
+            };
 
-            var geometry = formattedText.BuildGeometry(new System.Windows.Point(x, y));
-            var pathGeometry = geometry.GetFlattenedPathGeometry();
+            // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.formattedtext.buildgeometry?view=net-5.0
+            Geometry geometry = formattedText.BuildGeometry(new Point(x, y));
+            // TODO: https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.geometry.getflattenedpathgeometry?view=net-5.0#System_Windows_Media_Geometry_GetFlattenedPathGeometry
+            PathGeometry pathGeometry = geometry.GetFlattenedPathGeometry();
             var unfrozen = pathGeometry.Clone();
 
             return unfrozen;
@@ -253,10 +255,10 @@ namespace WPFAnimations.Visuals
             var stopStart = new GradientStop() { Color = color, Offset = -1 };
             var stopEnd = new GradientStop() { Color = Colors.Transparent, Offset = -1 };
 
-            LinearGradientBrush linearGradientBrush = new LinearGradientBrush();
-            linearGradientBrush.StartPoint = new Point(0, 0);
-            linearGradientBrush.EndPoint = new Point(1, 0);
-            linearGradientBrush.GradientStops = new GradientStopCollection();
+            var linearGradientBrush = new LinearGradientBrush();
+            linearGradientBrush.StartPoint = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+            linearGradientBrush.EndPoint = new RelativePoint(new Point(1, 0), RelativeUnit.Relative);
+            linearGradientBrush.GradientStops = new GradientStops();
             linearGradientBrush.GradientStops.Add(stopStart);
             linearGradientBrush.GradientStops.Add(stopEnd);
 
@@ -265,10 +267,9 @@ namespace WPFAnimations.Visuals
             Path = new Path();
             Path.Data = pathGeometry;
             Path.Fill = linearGradientBrush;
-            Path.StrokeDashArray = new DoubleCollection() { 2000, 2000 };
+            Path.StrokeDashArray = new AvaloniaList<double>() { 2000, 2000 };
             Path.StrokeDashOffset = -2000;
             Path.Stroke = Stroke;
-            Path.Stroke.Freeze();
 
             var group = new TransformGroup();
 
@@ -291,7 +292,7 @@ namespace WPFAnimations.Visuals
 
         public void Remove()
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 canvas.Children.Remove(Path);
             });
@@ -301,7 +302,7 @@ namespace WPFAnimations.Visuals
             string font = "Nexa Bold",
             double fontSize = 88)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 CreateWithoutCanvas(text, color, font, fontSize);
                 canvas.Children.Add(Path);
@@ -314,21 +315,11 @@ namespace WPFAnimations.Visuals
             ShowFill(speed * 2, delay + (speed / 4));
         }
 
-        public void Freeze()
-        {
-            dispatcher.Invoke(() =>
-            {
-                Path.Data.Freeze();
-            });
-        }
-
         public void Optimize()
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 Path.Fill = new SolidColorBrush(PrimaryColor);
-                Path.Fill.Freeze();
-                Path.Stroke.Freeze();
 
                 IsOptimized = true;
             });
@@ -336,7 +327,7 @@ namespace WPFAnimations.Visuals
 
         public void UnOptimize()
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 Path.Fill = Fill;
 
@@ -352,7 +343,7 @@ namespace WPFAnimations.Visuals
 
         public void HideOpacity(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 this.Path.BeginAnimation(Path.OpacityProperty, 
                     AnimationHelper.GetDoubleAnimation(0, speed, delay));
@@ -361,7 +352,7 @@ namespace WPFAnimations.Visuals
 
         public void ShowOpacity(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 this.Path.BeginAnimation(Path.OpacityProperty,
                     AnimationHelper.GetDoubleAnimation(1, speed, delay));
@@ -370,7 +361,7 @@ namespace WPFAnimations.Visuals
 
         public void ShowFill(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 if (IsOptimized)
                     UnOptimize();
@@ -384,7 +375,7 @@ namespace WPFAnimations.Visuals
 
         public void HideFill(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 if (IsOptimized)
                     UnOptimize();
@@ -398,7 +389,7 @@ namespace WPFAnimations.Visuals
 
         public void ShowStroke(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 Path.BeginAnimation(Path.StrokeDashOffsetProperty, 
                     AnimationHelper.GetDoubleAnimation(0, speed, delay));
@@ -407,7 +398,7 @@ namespace WPFAnimations.Visuals
 
         public void HideStroke(double speed = 400, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 Path.BeginAnimation(Path.StrokeDashOffsetProperty, 
                     AnimationHelper.GetDoubleAnimation(-2000, speed, delay));
@@ -418,7 +409,7 @@ namespace WPFAnimations.Visuals
             double offset = -1, double fontSize = -1, string fontName = null,
             double speed = 0.025, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 (Range source, PathGeometry target)[]
                     pathGeometries = new (Range source, PathGeometry target)[by.Length];
@@ -461,7 +452,7 @@ namespace WPFAnimations.Visuals
 
         public void ExpandFrom(string[] by, double offset = -1, double speed = 0.025, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 (Range source, PathGeometry target)[]
                     pathGeometries = new (Range source, PathGeometry target)[by.Length];
@@ -505,7 +496,7 @@ namespace WPFAnimations.Visuals
         {
             VisualText to = null;
 
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 to = new VisualText(X, Y, canvas, dispatcher);
                 to.Create(by, Colors.White, FontName, FontSize);
@@ -537,7 +528,7 @@ namespace WPFAnimations.Visuals
         {
             VisualText to = null;
 
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 by = " " + by;
                 to = new VisualText(X + Path.Data.Bounds.Width, Y, canvas, dispatcher);
@@ -577,7 +568,7 @@ namespace WPFAnimations.Visuals
 
         public void MorphCollapse(double speed = 0.01, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 textAnimationState = new AnimationState<PathGeometry>();
                 textAnimationState.ProgressIncrement = speed;
@@ -589,7 +580,7 @@ namespace WPFAnimations.Visuals
 
         public void Underline(double speed = 0.01, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 double offsetY = 10;
                 var pathGeometry = ((PathGeometry)this.Path.Data);
@@ -641,7 +632,7 @@ namespace WPFAnimations.Visuals
         public void MorphToApply(List<PathGeometry> cache)
         {
             RenderMorphCache render = null;
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 render = new RenderMorphCache(cache, this.Path);
                 render.Run();
@@ -652,7 +643,7 @@ namespace WPFAnimations.Visuals
         {
             List<PathGeometry> result = null;
 
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 VisualText to = new VisualText();
                 var geometry = to.CreateTextGeometry(X, Y, other, FontName, FontSize);
@@ -670,7 +661,7 @@ namespace WPFAnimations.Visuals
 
         public void MorphTo(string other, string fontName, double fontSize, double speed = 0.01, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 textAnimationState = new AnimationState<PathGeometry>();
                 textAnimationState.ProgressIncrement = speed;
@@ -686,7 +677,7 @@ namespace WPFAnimations.Visuals
 
         public void MorphTo(PathGeometry other, double speed = 0.01, double delay = 0)
         {
-            dispatcher.Invoke(() =>
+            dispatcher.InvokeAsync(() =>
             {
                 textAnimationState = new AnimationState<PathGeometry>();
                 textAnimationState.ProgressIncrement = speed;
@@ -867,3 +858,4 @@ namespace WPFAnimations.Visuals
         }
     }
 }
+#endif
